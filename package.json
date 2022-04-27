@@ -1,0 +1,36 @@
+{
+  "name": "open-api-code-generator-for-axios",
+  "version": "0.0.0",
+  "description": "1. openAPIから型を生成する 2. その型を利用してaxiosの通信部分の関数を生成する",
+  "main": "index.js",
+  "bin": {
+    "openapi-codegen": "./bin/openapi-codegen.js"
+  },
+  "scripts": {
+    "build": "webpack",
+    "build:watch": "tsc -w",
+    "generate": "rm -rf examples/__generated__ && openapi-codegen"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nozomi-iida/open-api-code-generator-for-axios.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nozomi-iida/open-api-code-generator-for-axios/issues"
+  },
+  "homepage": "https://github.com/nozomi-iida/open-api-code-generator-for-axios#readme",
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^17.0.27",
+    "openapi-types": "^11.0.0",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@apidevtools/swagger-parser": "^10.0.3",
+    "fs-extra": "^10.1.0"
+  }
+}

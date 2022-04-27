@@ -1,0 +1,3037 @@
+openapi: 3.0.0
+info:
+  title: Admin
+  version: '1.0'
+servers:
+  - url: http://localhost:3000/admin/v1
+    description: local
+  - url: https://api.prob-works.com/admin/v1
+    description: Prd
+  - url: https://api-stg.prob-works.com/admin/v1
+    description: Stg
+  - url: https://api-dev.prob-works.com/admin/v1
+    description: Dev
+paths:
+  /employment_statuses:
+    get:
+      summary: 雇用形態一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/EmploymentStatuses'
+      operationId: get-employment_statuses
+      x-internal: false
+    post:
+      summary: 雇用形態を作成する
+      operationId: post-employment_statuses
+      responses:
+        '200':
+          $ref: '#/components/responses/EmploymentStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                employment_status:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: アルバイト
+                    type:
+                      type: string
+                      enum:
+                        - CAREER
+                        - PROJECT
+            examples:
+              example-1:
+                value:
+                  employment_status:
+                    name: アルバイト
+                    type: CAREER
+  /employment_statuses/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 雇用形態を取得する
+      tags: []
+      operationId: get-employment_statuses-id
+      responses:
+        '200':
+          $ref: '#/components/responses/EmploymentStatus'
+    patch:
+      summary: 雇用形態を更新する
+      operationId: patch-employment_statuses-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                employment_status:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: アルバイト
+                    type:
+                      type: string
+                      enum:
+                        - CAREER
+                        - PROJECT
+            examples:
+              example-1:
+                value:
+                  employment_status:
+                    name: アルバイト
+                    type: CAREER
+        description: ''
+      responses:
+        '200':
+          $ref: '#/components/responses/EmploymentStatus'
+    delete:
+      summary: 雇用形態を削除する
+      operationId: delete-employment_statuses-id
+      responses:
+        '204':
+          description: No Content
+  /states:
+    get:
+      summary: 都市一覧を取得する
+      tags: []
+      operationId: get-states
+      responses:
+        '200':
+          $ref: '#/components/responses/States'
+    post:
+      summary: 都市を作成する
+      operationId: post-states
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: 日本
+                    country_code:
+                      type: string
+                      example: '394'
+            examples:
+              example-1:
+                value:
+                  state:
+                    name: 日本
+                    country_code: '394'
+        description: ''
+      responses:
+        '201':
+          $ref: '#/components/responses/State'
+  /states/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 都市を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/State'
+      operationId: get-states-id
+    patch:
+      summary: 都市を更新する
+      operationId: patch-states-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: 日本
+                    country_code:
+                      type: string
+                      example: '394'
+            examples:
+              example-1:
+                value:
+                  state:
+                    name: 日本
+                    country_code: '394'
+      responses:
+        '200':
+          $ref: '#/components/responses/State'
+    delete:
+      summary: 都市を削除する
+      operationId: delete-states-id
+      responses:
+        '204':
+          description: No Content
+  /term_histories:
+    get:
+      summary: 利用規約一覧を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  term_histories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TermHistory.v1'
+      operationId: get-term_histories
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - common
+              - plan
+          in: query
+          name: type
+    post:
+      summary: 利用規約を作成する
+      operationId: post-term_histories
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermHistory.v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                term_history:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      example: 内容
+                    version:
+                      type: string
+                      example: 1.0.0
+            examples:
+              example-1:
+                value:
+                  term_history:
+                    content: 内容
+                    version: 1.0.0
+  /term_histories/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 利用規約を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermHistory.v1'
+      operationId: get-term_histories-id
+  /privacy_policy_histories:
+    get:
+      summary: プライバシーポリシー一覧を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  privacy_policy_histories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
+      operationId: get-privacy_policy_histories
+    post:
+      summary: プライバシーポリシーを作成する
+      operationId: post-privacy_policy_histories
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                privacy_policy_history:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      example: 内容
+                    version:
+                      type: string
+                      example: 1.0.0
+            examples:
+              example-1:
+                value:
+                  privacy_policy_history:
+                    content: 内容
+                    version: 1.0.0
+  /privacy_policy_histories/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: プライバシーポリシーを取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
+      operationId: get-privacy_policy_histories-id
+  /consent_matters:
+    get:
+      summary: 追加項目一覧を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  consent_matters:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsentMatter.v1'
+      operationId: get-consent_matters
+    post:
+      summary: 追加項目を作成する
+      operationId: post-consent_matters
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentMatter.v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                consent_matter:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      example: 追加内容
+                    term_history_id:
+                      type:
+                        - string
+                        - 'null'
+                      format: uuid
+                    privacy_policy_id:
+                      type:
+                        - string
+                        - 'null'
+                      format: uuid
+            examples:
+              example-1:
+                value:
+                  consent_matter:
+                    content: 追加内容
+                    term_history_id: 94bb0406-7b98-4e85-8b20-1032d1eccc8a
+                    privacy_policy_id: f79b0bf7-657c-4617-826b-87ab5d2fce5b
+  /consent_matters/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 追加項目を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentMatter.v1'
+      operationId: get-consent_matters-id
+  /products:
+    get:
+      summary: 商品一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Products'
+      operationId: get-product
+    post:
+      summary: 商品を作成する
+      operationId: post-product
+      responses:
+        '201':
+          $ref: '#/components/responses/Product'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    active:
+                      type: boolean
+                    type:
+                      type: string
+                      enum:
+                        - good
+                        - service
+                      description: good=買い切り商品, service=サブスク
+                    plan_type:
+                      type: string
+                      enum:
+                        - client
+                        - agent
+                  required:
+                    - name
+                    - type
+            examples:
+              example-1:
+                value:
+                  product:
+                    name: string
+                    description: string
+                    active: true
+                    type: good
+                    plan_type: client
+    parameters: []
+  /products/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 商品を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Product'
+      operationId: get-products-id
+    patch:
+      summary: 商品を更新する
+      operationId: patch-products-id
+      responses:
+        '200':
+          $ref: '#/components/responses/Product'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    active:
+                      type: boolean
+            examples:
+              example-1:
+                value:
+                  product:
+                    name: string
+                    description: string
+                    active: true
+    delete:
+      summary: 商品を削除する
+      operationId: delete-products-id
+      responses:
+        '204':
+          description: OK
+  /products/{id}/prices:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 商品の値段一覧を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  prices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Price.v1'
+      operationId: get-products-id-prices
+      description: ''
+    post:
+      summary: 商品の価格を作成する
+      operationId: post-products-id-prices
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price.v1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: object
+                  properties:
+                    active:
+                      type: boolean
+                    currency:
+                      type: string
+                      example: JPY
+                      description: ISO 4217
+                    unit_amount:
+                      type: number
+                    type:
+                      type: string
+                      enum:
+                        - one_time
+                        - recurring
+                      description: 買い切りかサブスクか
+                    interval:
+                      type: string
+                      description: サブスクの場合のみ必須
+                      enum:
+                        - day
+                        - week
+                        - month
+                        - year
+                    interval_count:
+                      type: string
+                      description: 請求周期, 3日に1回とか
+                  required:
+                    - currency
+                    - unit_amount
+                    - type
+            examples:
+              example-1:
+                value:
+                  price:
+                    active: true
+                    currency: JPY
+                    unit_amount: 0
+                    type: one_time
+                    interval: day
+                    interval_count: string
+        description: ''
+  /prices/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 商品の価格を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price.v1'
+      operationId: get-prices-id
+    patch:
+      summary: 商品の価格を更新する
+      operationId: patch-prices-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: object
+                  properties:
+                    active:
+                      type: boolean
+            examples:
+              example-1:
+                value:
+                  price:
+                    active: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price.v1'
+  /job_change_completion_reports:
+    get:
+      summary: 転職完了報告一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/JobChangeCompletionReports'
+      operationId: get-job_change_completion_reports
+  /recruitment_completion_reports:
+    get:
+      summary: 採用完了報告一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/RecruitmentCompletionReports'
+      operationId: get-recruitment_completion_reports
+  /recruitments:
+    get:
+      summary: 募集一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Recruitments'
+      operationId: get-recruitments
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - career
+              - project
+          in: query
+          name: type
+          description: 「社員採用（キャリア）」「副業・フリーランス（プロジェクト）」
+        - schema:
+            type: string
+            enum:
+              - public
+              - private
+              - archived
+              - rejected
+          in: query
+          name: accessible_type
+          description: 「全体公開」「限定公開」「停止」「差し止め」
+        - schema:
+            type: string
+          in: query
+          name: occupation_ids
+          description: 職種
+        - schema:
+            type: string
+          in: query
+          name: industry_ids
+          description: 業種
+        - schema:
+            type: string
+          in: query
+          name: employment_status_ids
+          description: 雇用形態
+        - schema:
+            type: string
+            enum:
+              - client
+              - agent
+              - service
+          in: query
+          name: source_type
+          description: 「自社募集」「他社募集」「クローリング募集」
+        - schema:
+            type: string
+          in: query
+          name: keyword
+          description: キーワード検索
+        - schema:
+            type: boolean
+          in: query
+          name: organizational_checked
+          description: 企業内フラグ（表向きには「校閲済み」や「重要」など）
+        - schema:
+            type: boolean
+          in: query
+          name: admin_checked
+          description: adminフラグ（主にクローリング募集に対する「校閲済み」など）
+        - schema:
+            type: boolean
+          in: query
+          name: sort_asc_updated_at
+          description: trueなら昇順、falseなら降順
+  /recruitments/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 募集を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Recruitment'
+      operationId: get-recruitments-id
+    patch:
+      summary: 募集を更新する
+      operationId: patch-recruitments-id
+      responses:
+        '200':
+          $ref: '#/components/responses/Recruitment'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recruitment:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: 三度の飯よりReact！そんなGeekなあなたへ
+                    department:
+                      type: string
+                      example: 開発部
+                    position:
+                      type: string
+                      example: 管理職
+                    workplace_id:
+                      type: string
+                      format: uuid
+                    job_description:
+                      type: string
+                      example: 新規事業のフロントサイドエンジニア
+                    work_conditions:
+                      type: string
+                      example: 保険・交通費とか諸々
+                    qualification_requirements:
+                      type: string
+                      example: ・大卒以上　・40歳未満
+                    is_released:
+                      type: boolean
+                      default: false
+                    type:
+                      type: string
+                      enum:
+                        - career
+                        - project
+                      example: career
+                    accessible_type:
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    tax_type:
+                      type: string
+                      enum:
+                        - included
+                        - excluded
+                    min_amount:
+                      type: integer
+                      example: 400
+                    max_amount:
+                      type: integer
+                      example: 500
+                    billing_method:
+                      type: string
+                      enum:
+                        - hourly
+                        - daily
+                        - monthly
+                        - yearly
+                        - with_project
+                      description: 「時給」「日給」「月給」「年収」「1案件」
+                    target_company_status:
+                      type: string
+                      enum:
+                        - none
+                        - private
+                        - certained
+                        - specified
+                      description: 募集元企業の状態「なし」「非公開」「某社」「指定あり」
+                    target_company_id:
+                      type: string
+                      description: 募集元企業を指定する場合は必須
+                      format: uuid
+                    target_company_certain_name:
+                      type: string
+                      description: target_company_statusがcertainedの時、表示名を指定
+                    nearest_station:
+                      type: string
+                    project_number:
+                      type: string
+                    is_organizational_checked:
+                      type: boolean
+                      description: 企業内でのフラグ
+                    is_admin_checked:
+                      type: boolean
+                      description: adminのフラグ
+                    employment_status_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uuid
+                    occupation_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uuid
+                    industry_ids:
+                      type: array
+                      format: uuid
+                      items:
+                        type: string
+                    feature_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uuid
+            examples:
+              example-1:
+                value:
+                  recruitment:
+                    title: 三度の飯よりReact！そんなGeekなあなたへ
+                    department: 開発部
+                    position: 管理職
+                    workplace_id: f8aa9045-e91c-4c0d-86a4-c79ebb5ea22b
+                    job_description: 新規事業のフロントサイドエンジニア
+                    work_conditions: 保険・交通費とか諸々
+                    qualification_requirements: ・大卒以上　・40歳未満
+                    is_released: false
+                    type: career
+                    accessible_type: public
+                    tax_type: included
+                    min_amount: 400
+                    max_amount: 500
+                    billing_method: hourly
+                    target_company_status: none
+                    target_company_id: 9276b404-8f84-4edb-ad03-de6e6767acdf
+                    target_company_certain_name: string
+                    nearest_station: string
+                    project_number: string
+                    is_organizational_checked: true
+                    is_admin_checked: true
+                    employment_status_ids:
+                      - 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    occupation_ids:
+                      - 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    industry_ids:
+                      - string
+                    feature_ids:
+                      - 497f6eca-6276-4993-bfeb-53cbbbba6f08
+      description: ''
+    delete:
+      summary: 募集を削除する
+      operationId: delete-recruitments-id
+      responses:
+        '204':
+          description: No Content
+  /companies:
+    get:
+      summary: 企業一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Companies'
+      operationId: get-companies
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: keyword
+          description: 企業名
+        - schema:
+            type: string
+          in: query
+          name: owner_keyword
+          description: 担当者名
+        - schema:
+            type: string
+            enum:
+              - account
+              - stub
+          in: query
+          name: type
+          description: 通常orスタブ
+        - schema:
+            type: string
+            enum:
+              - unspecified
+              - request
+              - verified
+              - rejected
+          in: query
+          name: admin_verification_status
+          description: admin審査状態
+        - schema:
+            type: boolean
+          in: query
+          name: sort_asc_updated_at
+          description: trueなら昇順、falseなら降順
+        - schema:
+            type: boolean
+          in: query
+          name: sort_asc_subscribed_at
+          description: trueなら昇順、falseなら降順
+  /companies/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 企業を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Company'
+      operationId: get-companies-id
+    patch:
+      summary: 企業を更新する
+      operationId: patch-companies-id
+      responses:
+        '200':
+          $ref: '#/components/responses/Company'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: 株式会社SIMULA Labs
+                    name_kana:
+                      type: string
+                      example: 'シミュララボ '
+                    head_office_location:
+                      type: string
+                      example: 東京都港区元赤坂1-7-18
+                    year_of_establishment:
+                      type: string
+                      format: date
+                      example: '2019-08-24'
+                    hp_url:
+                      type: string
+                      format: uri
+                      example: https://simula-labs.com/
+                    phone:
+                      type: string
+                      example: 03-1234-5678
+                    capital:
+                      type: number
+                      example: 1520
+                    is_listed:
+                      type: boolean
+                      default: false
+                      example: 'false'
+                    representative:
+                      type: string
+                      example: 牧野暉弘
+                    representative_kana:
+                      type: string
+                      example: まきのあきひろ
+                    net_sales:
+                      type: string
+                      example: '5000'
+                    numbers_of_employees:
+                      type: string
+                      example: '20'
+                    average_age:
+                      type: integer
+                      example: 28
+                    feature_ids:
+                      type: array
+                      items:
+                        type: string
+                        format: uuid
+                    business_summary:
+                      type: string
+                      example: 事業概要
+                    corporate_pr:
+                      type: string
+                      maxLength: 500
+                      example: >-
+                        ヒトが生涯の中で最も長く過ごす「働く」という時間。
+                        日本の場合、この働く時間をどう過ごすかはほとんど就活の間に決まってしまっていると言ってもいいでしょう。
+                    logo:
+                      type: string
+                      description: 画像も投稿したい時はform-dataで投げて
+                    cover:
+                      type: string
+                      description: 画像も投稿したい時はform-dataで投げて
+                    public_verification_status:
+                      type: string
+                      enum:
+                        - unspecified
+                        - requested
+                        - verified
+                        - rejected
+                    employment_placement_permit_number:
+                      type: string
+                    recruitment_fee_ratio:
+                      type: number
+                    introduction_fee_ratio:
+                      type: number
+            examples:
+              example-1:
+                value:
+                  company:
+                    name: 株式会社SIMULA Labs
+                    name_kana: 'シミュララボ '
+                    head_office_location: 東京都港区元赤坂1-7-18
+                    year_of_establishment: '2019-08-24'
+                    hp_url: https://simula-labs.com/
+                    phone: 03-1234-5678
+                    capital: 1520
+                    is_listed: false
+                    representative: 牧野暉弘
+                    representative_kana: まきのあきひろ
+                    net_sales: '5000'
+                    numbers_of_employees: '20'
+                    average_age: 28
+                    feature_ids:
+                      - 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    business_summary: 事業概要
+                    corporate_pr: >-
+                      ヒトが生涯の中で最も長く過ごす「働く」という時間。
+                      日本の場合、この働く時間をどう過ごすかはほとんど就活の間に決まってしまっていると言ってもいいでしょう。
+                    logo: string
+                    cover: string
+                    public_verification_status: unspecified
+                    employment_placement_permit_number: string
+                    recruitment_fee_ratio: 0
+                    introduction_fee_ratio: 0
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+      description: ''
+    delete:
+      summary: 企業を削除する
+      operationId: delete-companies-id
+      responses:
+        '204':
+          description: No Content
+  /companies/{company_id}/accept:
+    parameters:
+      - schema:
+          type: string
+        name: company_id
+        in: path
+        required: true
+    post:
+      summary: 企業のプラン審査を承認する
+      operationId: post-companies-company_id-accept
+      responses:
+        '200':
+          $ref: '#/components/responses/Company'
+  /companies/{company_id}/reject:
+    parameters:
+      - schema:
+          type: string
+        name: company_id
+        in: path
+        required: true
+    post:
+      summary: 企業のプラン審査を拒否する
+      operationId: post-companies-company_id-reject
+      responses:
+        '200':
+          $ref: '#/components/responses/Company'
+  /companies/{company_id}/forced_cancel:
+    parameters:
+      - schema:
+          type: string
+        name: company_id
+        in: path
+        required: true
+    post:
+      summary: 企業のプランを強制解約する
+      operationId: post-companies-company_id-forced_cancel
+      responses:
+        '200':
+          $ref: '#/components/responses/Company'
+  /accounts:
+    get:
+      summary: アカウント一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Accounts'
+      operationId: get-accounts
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - applicant
+          in: query
+          name: type
+          description: '''applicant''を指定すると、応募者のアカウント一覧を取得する'
+        - schema:
+            type: string
+          in: query
+          name: keyword
+          description: アカウントの名前検索
+      description: |-
+        typeで'applicant'を指定したら、応募者のアカウント一覧を取得できる。
+        レスポンスは:id, :recruitments, :applied_at, :profile
+  /accounts/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ''
+    get:
+      summary: アカウントを取得する
+      tags:
+        - Account
+      responses:
+        '200':
+          $ref: '#/components/responses/Account'
+      operationId: get-accounts-id
+    patch:
+      summary: アカウントを更新する
+      tags:
+        - Account
+      responses:
+        '200':
+          $ref: '#/components/responses/Account'
+      operationId: patch-accounts-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    avatar:
+                      type: string
+                      format: binary
+                    is_career_scout_target:
+                      type: boolean
+                      default: true
+                    is_project_scout_target:
+                      type: boolean
+                      default: true
+                    is_public_work:
+                      type: boolean
+            examples:
+              example-1:
+                value:
+                  account:
+                    email: user@example.com
+                    avatar: string
+                    is_career_scout_target: true
+                    is_project_scout_target: true
+                    is_public_work: true
+    delete:
+      summary: アカウントを削除する
+      tags:
+        - Account
+      responses:
+        '204':
+          description: No Content
+      operationId: delete-accounts-id
+  /accounts/{account_id}/academic_histories:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントの学歴一覧を取得する
+      tags: []
+      operationId: get-accounts-account_id-academic_histories
+      parameters: []
+      description: ''
+      responses:
+        '200':
+          $ref: '#/components/responses/AcademicHistories'
+  /accounts/{account_id}/work_histories:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントの職歴一覧を取得する
+      tags: []
+      operationId: get-accounts-account_id-work_histories
+      responses:
+        '200':
+          $ref: '#/components/responses/WorkHistories'
+  /accounts/{account_id}/skills:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントのスキル一覧を取得する
+      tags: []
+      operationId: get-accounts-account_id-skills
+      responses:
+        '200':
+          $ref: '#/components/responses/Skills'
+  /accounts/{account_id}/hopes:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントの希望条件一覧を取得する
+      tags: []
+      operationId: get-accounts-account_id-hopes
+      responses:
+        '200':
+          $ref: '#/components/responses/Hopes'
+  /accounts/{account_id}/project_result:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントのプロジェクト実績を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResult'
+      operationId: get-accounts-account_id-project_result
+  /accounts/{account_id}/occupation_histories:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントの経験職種一覧を取得する
+      tags: []
+      operationId: get-accounts-account_id-occupation_histories
+      responses:
+        '200':
+          $ref: '#/components/responses/OccupationHistories'
+  /accounts/{account_id}/industry_histories:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントの経験業種一覧を取得する
+      tags: []
+      operationId: get-accounts-account_id-industry_histories
+      responses:
+        '200':
+          $ref: '#/components/responses/IndustryHistories'
+  /accounts/{account_id}/achievements:
+    parameters:
+      - schema:
+          type: string
+        name: account_id
+        in: path
+        required: true
+    get:
+      summary: アカウントの実績一覧を取得する
+      tags: []
+      operationId: get-accounts-account_id-achievements
+      responses:
+        '200':
+          $ref: '#/components/responses/Achievements'
+  /withdrawals:
+    get:
+      summary: 出金申請一覧を取得する
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  withdrawals:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        amount:
+                          type: integer
+                          example: 40000
+                        withdrawal_method:
+                          type: string
+                          enum:
+                            - manual
+                            - automatic
+                        created_at:
+                          type: string
+                          format: date-time
+                        account:
+                          $ref: '#/components/schemas/Account-2'
+                        company:
+                          $ref: '#/components/schemas/Company'
+                      required:
+                        - amount
+                        - withdrawal_method
+                        - created_at
+                  total_data_nums:
+                    type: integer
+      operationId: get-withdrawals
+  /payouts:
+    get:
+      summary: 出金一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Payouts'
+      operationId: get-payouts
+  /features:
+    get:
+      summary: 特徴一覧を取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Features'
+      operationId: get-features
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - default
+              - organizational
+          in: query
+          name: type
+          description: 「default」or「organizational」
+        - schema:
+            type: string
+          in: query
+          name: keyword
+          description: feature名を前方一致で検索
+        - schema:
+            type: string
+            enum:
+              - company
+              - recruitment
+          in: query
+          name: source_type
+          description: 「company」or「recruitment」
+    post:
+      summary: 特徴を作成する
+      operationId: post-features
+      responses:
+        '201':
+          $ref: '#/components/responses/Feature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feature:
+                  type: object
+                  required:
+                    - name
+                    - source_type
+                  properties:
+                    name:
+                      type: string
+                    source_type:
+                      type: string
+                      enum:
+                        - company
+                        - recruitment
+              required:
+                - feature
+            examples:
+              example-1:
+                value:
+                  feature:
+                    name: string
+                    source_type: company
+  /official_informations:
+    get:
+      summary: 公式お知らせ一覧を取得する
+      tags: []
+      operationId: get-official_informations
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: is_released
+          description: 公開中か
+      responses:
+        '200':
+          $ref: '#/components/responses/OfficialInformations'
+    post:
+      summary: 公式お知らせを作成する
+      operationId: post-official_informations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                official_information:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    html_content:
+                      type: string
+                    is_released:
+                      type: boolean
+                  required:
+                    - is_released
+            examples:
+              example-1:
+                value:
+                  official_information:
+                    title: string
+                    content: string
+                    html_content: string
+                    is_released: true
+      responses:
+        '201':
+          $ref: '#/components/responses/OfficialInformation'
+  /official_informations/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 公式お知らせを取得する
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/OfficialInformation'
+      operationId: get-official_informations-id
+    patch:
+      summary: 公式お知らせを更新する
+      operationId: patch-official_informations-id
+      responses:
+        '200':
+          $ref: '#/components/responses/OfficialInformation'
+      description: 下書きのみ更新可能
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                official_information:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    html_content:
+                      type: string
+                    is_released:
+                      type: boolean
+            examples:
+              example-1:
+                value:
+                  official_information:
+                    title: string
+                    content: string
+                    html_content: string
+                    is_released: true
+    delete:
+      summary: 公式お知らせを削除する
+      operationId: delete-official_informations-id
+      responses:
+        '204':
+          description: No Content
+      description: 下書きのみ削除可能
+components:
+  schemas:
+    EmploymentStatus:
+      title: EmploymentStatus
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+          example: 正社員
+        type:
+          type: string
+          enum:
+            - CAREER
+            - PROJECT
+        project_classification:
+          type: string
+          enum:
+            - contract
+            - quasi_mandate
+            - outsourcing
+          description: 「請負」「準委任」「業務委託」
+        is_selectable:
+          type: boolean
+          description: 募集作成の時に選択可能か
+    State:
+      title: State
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        country_code:
+          type: string
+        name:
+          type: string
+    TermHistory.v1:
+      title: TermHistory
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+          example: 利用規約の内容
+        version:
+          type: string
+          example: '1.0'
+        type:
+          type: string
+          enum:
+            - common
+            - plan
+      required:
+        - id
+        - content
+        - version
+        - type
+    PrivacyPolicyHistory.v1:
+      title: PrivacyPolicyHistory
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+          example: プライバシーポリシーの内容
+        version:
+          type: string
+          example: '1.0'
+      required:
+        - id
+        - content
+        - version
+    ConsentMatter.v1:
+      title: ConsentMatter
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+          example: 追加項目の内容
+        term_history:
+          $ref: '#/components/schemas/TermHistory.v1'
+        privacy_policy_history:
+          $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
+      required:
+        - id
+        - content
+    Product:
+      title: Product
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type: string
+        active:
+          type: boolean
+        type:
+          type: string
+          enum:
+            - good
+            - service
+        plan_type:
+          type: string
+          enum:
+            - standard
+            - agent
+            - starter
+        number:
+          type: number
+    Price.v1:
+      title: Price
+      type: object
+      examples: []
+      properties:
+        id:
+          type: string
+        active:
+          type: string
+        currency:
+          type: string
+        unit_amount_without_tax:
+          type: integer
+          description: 価格（税抜）
+          example: 3000
+        tax_for_unit_amount:
+          type: integer
+          description: 価格（税）
+        unit_amount:
+          type: integer
+          description: 価格（税込）
+      required:
+        - id
+        - active
+        - currency
+        - unit_amount
+    JobChangeCompletionReport:
+      title: JobChangeCompletionReport
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        amount:
+          type: integer
+    RecruitmentCompletionReport:
+      title: RecruitmentCompletionReport
+      type: object
+      description: ''
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        amount:
+          type: integer
+          example: 4000000
+          description: 年収（税の概念なし）
+        system_fee_ratio:
+          type: number
+        system_fee_without_tax:
+          type: integer
+          description: 手数料（税抜）
+        tax_for_system_fee:
+          type: integer
+          description: 手数料（税）
+        system_fee:
+          type: integer
+          description: 手数料（税込）
+        payment_status:
+          type: string
+          enum:
+            - unpaid
+            - paid
+            - failed
+            - pending
+        joined_date:
+          type: string
+          format: date
+        memo:
+          type: string
+        is_enable:
+          type: boolean
+          default: true
+    Company:
+      title: Company
+      type: object
+      description: ''
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum:
+            - account
+            - stub
+        name:
+          type: string
+          example: 株式会社SIMULA Labs
+        name_kana:
+          type: string
+          example: 'シミュララボ '
+        head_office_location:
+          type: string
+          example: 東京都港区元赤坂1-7-18
+        year_of_establishment:
+          type: string
+          format: date
+        hp_url:
+          type: string
+          format: uri
+          example: https://simula-labs.com/
+        phone:
+          type: string
+          example: '"08093897965"'
+        capital:
+          example: 15200000
+          description: 資本金（税の概念なし）
+          type: number
+        is_listed:
+          type: boolean
+          default: false
+          example: 'false'
+        representative:
+          type: string
+          example: 牧野暉弘
+        representative_kana:
+          type: string
+          example: まきのあきひろ
+        net_sales:
+          type: number
+          example: 5000
+          description: 前年度の売上高（税込）
+        numbers_of_employees:
+          type: string
+          example: '20'
+        average_age:
+          example: 28
+          type: number
+        business_summary:
+          type: string
+          example: 事業概要
+        corporate_pr:
+          type: string
+          maxLength: 500
+          example: >-
+            ヒトが生涯の中で最も長く過ごす「働く」という時間。
+            日本の場合、この働く時間をどう過ごすかはほとんど就活の間に決まってしまっていると言ってもいいでしょう。
+        logo_url:
+          type: string
+        cover_image_url:
+          type: string
+        is_sample:
+          type: boolean
+        admin_verification_status:
+          type: string
+          enum:
+            - unspecified
+            - requested
+            - verified
+            - rejected
+            - canceled
+          default: unspecified
+          description: admin審査状態
+        public_verification_status:
+          type: string
+          enum:
+            - unspecified
+            - requested
+            - verified
+            - rejected
+          default: unspecified
+        employment_placement_permit_number:
+          type: string
+          description: 有料職業紹介事業許可番号
+        recruitment_fee_ratio:
+          type: number
+          description: admin指定の採用報告手数料率
+        introduction_fee_ratio:
+          type: number
+          description: admin指定の紹介報告手数料率
+        deleted_at:
+          type: string
+          format: date-time
+        follower_nums:
+          description: フォロワー数
+          type: number
+        owner_email:
+          type: string
+          format: email
+          description: ownerのEmploymentのメールアドレス
+    Recruitment:
+      title: Recruitment
+      type: object
+      description: ''
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        title:
+          type: string
+          example: 三度の飯よりReact！そんなGeekなあなたへ
+        department:
+          type: string
+          example: 開発部
+        position:
+          type: string
+          example: 管理職
+        job_description:
+          type: string
+          example: 新規事業のフロントサイドエンジニア
+        work_conditions:
+          type: string
+          example: 保険・交通費とか諸々
+        qualification_requirement:
+          type: string
+          example: ・大卒以上　・40歳未満
+        publishment_status:
+          type: string
+          enum:
+            - draft
+            - published
+            - suspending
+            - terminated
+            - rejected
+          description: 「下書き」「公開」「休止」「終了」「強制停止」
+        is_sample:
+          type: boolean
+          default: false
+          description: サンプルか
+        accessible_type:
+          type: string
+          enum:
+            - public
+            - private
+          default: public
+          description: 「全体公開（誰でも見れる）」「非公開（許可した人のみ見れる）」
+        type:
+          type: string
+          enum:
+            - career
+            - project
+          default: career
+          description: 「転職」「副業・フリーランス」
+        min_amount:
+          type: integer
+          description: 最低金額（税込）
+        max_amount:
+          type: integer
+          description: 最高金額（税込）
+        billing_method:
+          type: string
+          enum:
+            - hourly
+            - daily
+            - monthly
+            - yearly
+            - with_project
+          description: 「時給」「日給」「月給」「年収」「1案件」
+        source_type:
+          type: string
+          enum:
+            - client
+            - agent
+            - service
+          description: 「クライアント作成（企業）」「エージェント作成」「サービス作成（クローリング）」
+        estimated_unit_amount:
+          type: integer
+          description: 推定単価（税込）
+        target_company_status:
+          type: string
+          enum:
+            - none
+            - private
+            - certained
+            - specified
+          description: 募集元企業の状態「なし」「非公開」「某社」「指定あり」
+        target_company_certain_name:
+          type: string
+          description: target_company_statusがcertainedの時、表示名を指定
+        nearest_station:
+          type: string
+        project_number:
+          type: string
+        published_since_date:
+          type: string
+          format: date
+          description: 掲載期間（開始）
+        published_until_date:
+          type: string
+          format: date
+          description: 掲載期間（終了）
+        is_applied:
+          type: boolean
+          description: 応募済みか
+        is_organizational_checked:
+          type: boolean
+          description: 企業内でのフラグ
+        is_admin_checked:
+          type: boolean
+          description: admin用のフラグ
+        can_not_release_reasons:
+          type: array
+          description: 公開出来ない理由
+          uniqueItems: false
+          items:
+            type: string
+        page_views:
+          type: number
+          description: PV数
+        applied_accounts:
+          type: integer
+          description: 候補者数
+        interested_accounts:
+          type: integer
+          description: その募集を気になるしてるアカウントの数
+        target_company:
+          $ref: '#/components/schemas/Company'
+    Account:
+      title: Account
+      type: object
+      x-tags:
+        - Account
+      description: ''
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+          example: test@example.com
+        email_verification_status:
+          type: string
+          example: verified
+          enum:
+            - unspecified
+            - request
+            - verified
+          default: unspecified
+        avatar_url:
+          type: string
+        last_sign_in_at:
+          type: string
+          format: date-time
+        last_notification_read_at:
+          type: string
+          format: date-time
+        is_career_scout_target:
+          type: boolean
+          default: true
+          description: キャリアスカウト受け入れるか
+        is_project_scout_target:
+          type: boolean
+          default: true
+          description: プロジェクトスカウト受け入れるか
+        is_public_with_work:
+          type: boolean
+          description: ProbWorksプロジェクト実績を公開するか
+        identity_verification_status:
+          type: string
+          enum:
+            - unspecified
+            - verified
+            - checking
+            - failed
+          default: unspecified
+        identification_requirements:
+          type: array
+          description: >
+            本人確認に足りない項目の配列（'external_account'は銀行口座、'individual.verification.document'は身分証明書）
+          items:
+            type: string
+        missing_requirements_for_general:
+          type: array
+          description: 求職者必須項目の不足項目
+          items:
+            type: string
+        missing_requirements_for_agent:
+          type: array
+          description: エージェント必須項目の不足項目
+          items:
+            type: string
+        is_sample:
+          type: boolean
+          default: false
+          description: サンプルか
+        deleted_at:
+          type: string
+          description: 論理削除時刻
+          format: date-time
+        register_as:
+          type: string
+          enum:
+            - general
+            - organizational
+        is_student:
+          type: boolean
+          default: false
+          description: 学生か
+        is_concluded_nda:
+          type: boolean
+        is_supported:
+          type: boolean
+          description: 非公開サポート申請をしているか
+        profile_completeness:
+          type: number
+          description: プロフィール完成度（%表記）
+    Profile:
+      title: Profile
+      type: object
+      description: ''
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        first_name:
+          type: string
+          example: 太郎
+        last_name:
+          type: string
+          example: 山田
+        first_name_kana:
+          type: string
+          example: タロウ
+        last_name_kana:
+          type: string
+          example: ヤマダ
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+            - OTHER
+          example: MALE
+        phone:
+          type: string
+          example: '"9012345678"'
+        nationality:
+          type: string
+          example: 日本
+        postal_code:
+          type: string
+          example: '"1070051"'
+        address:
+          type: string
+          example: 東京都港区元赤坂1-7-18
+        english_skill:
+          type: string
+          description: 「日常会話レベル」「ビジネス会話レベル」「ネイティブレベル」「なし」
+          enum:
+            - daily_conversation
+            - business_conversation
+            - native
+            - nothing
+          example: daily_conversation
+        date_of_birth:
+          type: string
+          format: date
+          description: ''
+        biography:
+          type: string
+          example: 自己PR/職務要約
+        japanese_skill:
+          type: string
+          description: 「日常会話レベル」「ビジネス会話レベル」「ネイティブレベル」「なし」
+          enum:
+            - daily_conversation
+            - business_conversation
+            - native
+            - nothing
+          example: native
+        recent_income_amount:
+          type: integer
+          description: 直近の年収（税の概念なし）
+        management_experience:
+          type: string
+          description: マネジメント経験人数
+          enum:
+            - nothing
+            - less_than_5
+            - from_6_to_10
+            - from_11_to_20
+            - from_21_to_50
+            - from_51_to_100
+            - from_101_to_500
+            - more_than_501
+        number_of_job_changes:
+          type: integer
+          description: 転職回数
+        academic_background:
+          type: string
+          example: 東京大学
+        year_of_agent_experience:
+          type: integer
+          example: 10
+        agent_area_in_charge:
+          type: string
+          example: 東京23区
+        agent_self_message:
+          type: string
+          example: 紹介メッセージ
+        agent_self_introduction:
+          type: string
+          example: 自己PR
+        agent_achievement:
+          type: string
+          example: 経歴・実績
+        files:
+          type: object
+          description: 履歴書等のPDFファイル
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            url:
+              type: string
+            content_type:
+              type: string
+              example: application/pdf
+            created_at:
+              type: string
+              format: date-time
+    Subscription:
+      title: Subscription
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - active
+            - past_due
+            - unpaid
+            - canceled
+            - incomplete
+            - incomplete_expired
+            - trialing
+            - all
+            - ended
+            - pending
+          example: active
+        since_date:
+          type: string
+          format: date
+        until_date:
+          type: string
+          format: date
+    Price:
+      title: Price
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        active:
+          type: string
+        currency:
+          type: string
+        unit_amount_without_tax:
+          type: number
+          description: 価格（税抜）
+          example: 3000
+        tax_for_unit_amount:
+          type: number
+          description: 価格（税）
+        unit_amount:
+          type: number
+          description: 価格（税込）
+      examples:
+        - id: string
+          created_at: '2019-08-24T14:15:22Z'
+          updated_at: '2019-08-24T14:15:22Z'
+          active: string
+          currency: string
+          unit_amount_without_tax: 3000
+          tax_for_unit_amount: 0
+          unit_amount: 0
+    IndustryHistory:
+      title: IndustryHistory
+      type: object
+      properties:
+        id:
+          type: string
+        year_of_experience:
+          type: integer
+          example: 3
+          description: 年単位
+        industry:
+          type: object
+          properties:
+            name:
+              type: string
+    Feature.v1:
+      title: Feature
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: フレックスタイム
+        type:
+          type: string
+          enum:
+            - default
+            - organizational
+          default: default
+        source_type:
+          type: string
+          enum:
+            - company
+            - recruitment
+      required:
+        - id
+        - name
+        - type
+        - source_type
+    Account-2:
+      title: Account
+      type: object
+      description: ''
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+          example: test@example.com
+        email_verification_status:
+          type: string
+          example: verified
+          enum:
+            - unspecified
+            - request
+            - verified
+          default: unspecified
+        avatar_url:
+          type: string
+        last_sign_in_at:
+          type: string
+          format: date-time
+        last_notification_read_at:
+          type: string
+          format: date-time
+        is_career_scout_target:
+          type: boolean
+          default: true
+          description: キャリアスカウト受け入れるか
+        is_project_scout_target:
+          type: boolean
+          default: true
+          description: プロジェクトスカウト受け入れるか
+        is_public_with_work:
+          type: boolean
+          description: ProbWorksプロジェクト実績を公開するか
+        identity_verification_status:
+          type: string
+          enum:
+            - unspecified
+            - verified
+            - checking
+            - failed
+          default: unspecified
+        identification_requirements:
+          type: array
+          description: >
+            本人確認に足りない項目の配列（'external_account'は銀行口座、'individual.verification.document'は身分証明書）
+          items:
+            type: string
+        missing_requirements_for_general:
+          type: array
+          description: 求職者必須項目の不足項目
+          items:
+            type: string
+        missing_requirements_for_agent:
+          type: array
+          description: エージェント必須項目の不足項目
+          items:
+            type: string
+        is_sample:
+          type: boolean
+          default: false
+          description: サンプルか
+        deleted_at:
+          type: string
+          description: 論理削除時刻
+          format: date-time
+        register_as:
+          type: string
+          enum:
+            - general
+            - organizational
+        is_student:
+          type: boolean
+          default: false
+          description: 学生か
+        display_name:
+          type: string
+        is_concluded_nda:
+          type: boolean
+        profile_completeness:
+          type: number
+          description: プロフィール完成度（%表記）
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+    AcademicHistory:
+      title: AcademicHistory
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+          example: 明治大学
+        faculty:
+          type: string
+          example: 情報コミュニケーション学部
+        since_date:
+          type: string
+          format: date
+          example: '2008-04-01'
+        until_date:
+          type: string
+          format: date
+          example: '2012-03-31'
+        type:
+          type: string
+          example: university
+          enum:
+            - graduate_school_doctor
+            - graduate_school_master
+            - university
+            - technical_college
+            - vocational_school
+            - junior_college
+            - high_school
+          description: 「大学院（博士）」「大学院（修士）」「大学」「高専」「専門学校」「短期大学」「高校」
+    WorkHistory:
+      title: WorkHistory
+      type: object
+      description: ''
+      examples: []
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+          example: 株式会社SIMULA Labs
+        is_employed:
+          type: boolean
+          description: 「在職中」「離職中」
+        position:
+          type: string
+          example: 主任
+        since_date:
+          type: string
+          format: date
+          example: '2019-08-01'
+        until_date:
+          format: date
+          example: '2020-05-01'
+          type: string
+        department:
+          type: string
+          example: 部署名
+    Skill:
+      title: Skill
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+    Hope:
+      title: Hope
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum:
+            - career
+            - project
+        amount:
+          type: integer
+        billing_method:
+          type: string
+          enum:
+            - hourly
+            - daily
+            - monthly
+            - yearly
+            - with_project
+          description: 「時給」「日給」「月給」「年収」「1案件」
+        time_to_change_job:
+          type: integer
+          description: 転職希望時期(Nヶ月以内)
+        special_note:
+          type: string
+          description: 特筆事項
+        beginning_period:
+          type: string
+          description: 案件開始時期
+          format: date
+    Job:
+      title: Job
+      type: object
+      description: ''
+      examples: []
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: 「進行中」「完了」
+          enum:
+            - in_progress
+            - completed
+          default: in_progress
+        is_sample:
+          type: boolean
+          default: true
+    ProjectResult:
+      title: ProjectResult
+      type: object
+      properties:
+        total_rate:
+          type: number
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        total_jobs_num:
+          type: integer
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+    Occupation:
+      title: Occupation
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+    OccupationHistory:
+      title: OccupationHistory
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        year_of_experience:
+          type: integer
+          example: 5
+          description: 年単位
+        occupation:
+          $ref: '#/components/schemas/Occupation'
+    Achievement:
+      title: Achievement
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        content:
+          type: string
+          example: 実績内容
+        created_date:
+          type: string
+          format: date
+        description:
+          type: string
+    Payout:
+      title: Payout
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        amount:
+          type: integer
+          example: 40000
+        currency:
+          type: string
+          example: jpy
+        status:
+          type: string
+          enum:
+            - pending
+            - in_transit
+            - paid
+            - failed
+            - canceled
+        arrival_date:
+          type: string
+          format: date
+          description: 支払完了予想日付
+    Feature:
+      title: Feature
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+          example: フレックスタイム
+        type:
+          type: string
+          enum:
+            - default
+            - organizational
+          default: default
+        source_type:
+          type: string
+          enum:
+            - company
+            - recruitment
+    OfficialInformation:
+      title: OfficialInformation
+      type: object
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        title:
+          type: string
+        content:
+          type: string
+        html_content:
+          type: string
+        is_released:
+          type: boolean
+  responses:
+    EmploymentStatus:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EmploymentStatus'
+    EmploymentStatuses:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              employment_statuses:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmploymentStatus'
+    States:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              states:
+                type: array
+                items:
+                  $ref: '#/components/schemas/State'
+    State:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/State'
+    OfficialInformation:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OfficialInformation'
+    OfficialInformations:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              official_informations:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfficialInformation'
+    Recruitment:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Recruitment'
+    Recruitments:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              recruitments:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recruitment'
+    AcademicHistories:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              academic_histories:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AcademicHistory'
+    WorkHistories:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              work_histories:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkHistory'
+    Hopes:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              hopes:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hope'
+    Account:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Account-2'
+    Accounts:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              accounts:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account-2'
+              total_data_nums:
+                type: integer
+    Company:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Company'
+              - type: object
+                properties:
+                  owner:
+                    allOf:
+                      - $ref: '#/components/schemas/Account'
+                      - type: object
+                        properties:
+                          profile:
+                            $ref: '#/components/schemas/Profile'
+              - type: object
+                properties:
+                  subscription:
+                    allOf:
+                      - $ref: '#/components/schemas/Subscription'
+                      - type: object
+                        properties:
+                          price:
+                            $ref: '#/components/schemas/Price'
+              - type: object
+                properties:
+                  recruitments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Recruitment'
+              - type: object
+                properties:
+                  industries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IndustryHistory'
+              - type: object
+                properties:
+                  features:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Feature.v1'
+    Companies:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              companies:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Company'
+                    - type: object
+                      properties:
+                        owner:
+                          allOf:
+                            - $ref: '#/components/schemas/Account'
+                            - type: object
+                              properties:
+                                profile:
+                                  $ref: '#/components/schemas/Profile'
+                    - type: object
+                      properties:
+                        subscription:
+                          allOf:
+                            - $ref: '#/components/schemas/Subscription'
+                            - type: object
+                              properties:
+                                price:
+                                  $ref: '#/components/schemas/Price'
+                    - type: object
+                      properties:
+                        recruitments:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Recruitment'
+                    - type: object
+                      properties:
+                        industries:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/IndustryHistory'
+                    - type: object
+                      properties:
+                        features:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/Feature.v1'
+              total_data_nums:
+                type: integer
+    Products:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              products:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    Product:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+    JobChangeCompletionReports:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              job_change_completion_reports:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobChangeCompletionReport'
+    RecruitmentCompletionReports:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              recruitment_completion_reports:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecruitmentCompletionReport'
+    Skills:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              skills:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Skill'
+    OccupationHistories:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              occupation_histories:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OccupationHistory'
+    IndustryHistories:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              industry_histories:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IndustryHistory'
+    Achievements:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              achievements:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Achievement'
+    Payouts:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              payouts:
+                $ref: '#/components/schemas/Payout'
+    Features:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              features:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feature'
+    Feature:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Feature'
