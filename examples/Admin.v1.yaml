@@ -189,16 +189,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  term_histories:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/TermHistory.v1'
+          $ref: '#/components/responses/TermHistories'
       operationId: get-term_histories
       parameters:
         - schema:
@@ -213,11 +204,7 @@ paths:
       operationId: post-term_histories
       responses:
         '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TermHistory.v1'
+          $ref: '#/components/responses/TermHistory'
       requestBody:
         content:
           application/json:
@@ -251,11 +238,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TermHistory.v1'
+          $ref: '#/components/responses/TermHistory'
       operationId: get-term_histories-id
   /privacy_policy_histories:
     get:
@@ -263,27 +246,14 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  privacy_policy_histories:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
+          $ref: '#/components/responses/PrivacyPolicyHistories'
       operationId: get-privacy_policy_histories
     post:
       summary: プライバシーポリシーを作成する
       operationId: post-privacy_policy_histories
       responses:
         '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
+          $ref: '#/components/responses/PrivacyPolicyHistory'
       requestBody:
         content:
           application/json:
@@ -317,11 +287,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
+          $ref: '#/components/responses/PrivacyPolicyHistory'
       operationId: get-privacy_policy_histories-id
   /consent_matters:
     get:
@@ -329,27 +295,14 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  consent_matters:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ConsentMatter.v1'
+          $ref: '#/components/responses/ConsentMatters'
       operationId: get-consent_matters
     post:
       summary: 追加項目を作成する
       operationId: post-consent_matters
       responses:
         '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConsentMatter.v1'
+          $ref: '#/components/responses/ConsentMatter'
       requestBody:
         content:
           application/json:
@@ -391,11 +344,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConsentMatter.v1'
+          $ref: '#/components/responses/ConsentMatter'
       operationId: get-consent_matters-id
   /products:
     get:
@@ -510,16 +459,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  prices:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Price.v1'
+          $ref: '#/components/responses/Prices'
       operationId: get-products-id-prices
       description: ''
     post:
@@ -527,11 +467,7 @@ paths:
       operationId: post-products-id-prices
       responses:
         '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Price.v1'
+          $ref: '#/components/responses/Price'
       requestBody:
         content:
           application/json:
@@ -593,11 +529,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Price.v1'
+          $ref: '#/components/responses/Price'
       operationId: get-prices-id
     patch:
       summary: 商品の価格を更新する
@@ -620,11 +552,7 @@ paths:
                     active: true
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Price.v1'
+          $ref: '#/components/responses/Price'
   /job_change_completion_reports:
     get:
       summary: 転職完了報告一覧を取得する
@@ -669,17 +597,17 @@ paths:
           name: accessible_type
           description: 「全体公開」「限定公開」「停止」「差し止め」
         - schema:
-            type: string
+            type: array
           in: query
           name: occupation_ids
           description: 職種
         - schema:
-            type: string
+            type: array
           in: query
           name: industry_ids
           description: 業種
         - schema:
-            type: string
+            type: array
           in: query
           name: employment_status_ids
           description: 雇用形態
@@ -1350,7 +1278,7 @@ paths:
                           type: string
                           format: date-time
                         account:
-                          $ref: '#/components/schemas/Account-2'
+                          $ref: '#/components/schemas/Account'
                         company:
                           $ref: '#/components/schemas/Company'
                       required:
@@ -1580,63 +1508,59 @@ components:
           type: string
         name:
           type: string
-    TermHistory.v1:
+    TermHistory:
       title: TermHistory
       type: object
       properties:
         id:
           type: string
-          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         content:
           type: string
-          example: 利用規約の内容
         version:
           type: string
-          example: '1.0'
         type:
           type: string
           enum:
             - common
             - plan
-      required:
-        - id
-        - content
-        - version
-        - type
-    PrivacyPolicyHistory.v1:
+    PrivacyPolicyHistory:
       title: PrivacyPolicyHistory
       type: object
       properties:
         id:
           type: string
-          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         content:
           type: string
-          example: プライバシーポリシーの内容
         version:
           type: string
-          example: '1.0'
-      required:
-        - id
-        - content
-        - version
-    ConsentMatter.v1:
+    ConsentMatter:
       title: ConsentMatter
       type: object
       properties:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         content:
           type: string
           example: 追加項目の内容
-        term_history:
-          $ref: '#/components/schemas/TermHistory.v1'
-        privacy_policy_history:
-          $ref: '#/components/schemas/PrivacyPolicyHistory.v1'
-      required:
-        - id
-        - content
     Product:
       title: Product
       type: object
@@ -1668,32 +1592,41 @@ components:
             - starter
         number:
           type: number
-    Price.v1:
+    Price:
       title: Price
       type: object
-      examples: []
       properties:
         id:
           type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         active:
           type: string
         currency:
           type: string
         unit_amount_without_tax:
-          type: integer
+          type: number
           description: 価格（税抜）
           example: 3000
         tax_for_unit_amount:
-          type: integer
+          type: number
           description: 価格（税）
         unit_amount:
-          type: integer
+          type: number
           description: 価格（税込）
-      required:
-        - id
-        - active
-        - currency
-        - unit_amount
+      examples:
+        - id: string
+          created_at: '2019-08-24T14:15:22Z'
+          updated_at: '2019-08-24T14:15:22Z'
+          active: string
+          currency: string
+          unit_amount_without_tax: 3000
+          tax_for_unit_amount: 0
+          unit_amount: 0
     JobChangeCompletionReport:
       title: JobChangeCompletionReport
       type: object
@@ -1998,17 +1931,23 @@ components:
           type: integer
           description: その募集を気になるしてるアカウントの数
         target_company:
-          $ref: '#/components/schemas/Company'
+          oneOf:
+            - $ref: '#/components/schemas/Company'
+            - type: 'null'
     Account:
       title: Account
       type: object
-      x-tags:
-        - Account
       description: ''
       properties:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         email:
           type: string
           format: email
@@ -2081,14 +2020,17 @@ components:
           type: boolean
           default: false
           description: 学生か
+        display_name:
+          type: string
         is_concluded_nda:
           type: boolean
-        is_supported:
-          type: boolean
-          description: 非公開サポート申請をしているか
         profile_completeness:
           type: number
           description: プロフィール完成度（%表記）
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
     Profile:
       title: Profile
       type: object
@@ -2244,41 +2186,6 @@ components:
         until_date:
           type: string
           format: date
-    Price:
-      title: Price
-      type: object
-      properties:
-        id:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        active:
-          type: string
-        currency:
-          type: string
-        unit_amount_without_tax:
-          type: number
-          description: 価格（税抜）
-          example: 3000
-        tax_for_unit_amount:
-          type: number
-          description: 価格（税）
-        unit_amount:
-          type: number
-          description: 価格（税込）
-      examples:
-        - id: string
-          created_at: '2019-08-24T14:15:22Z'
-          updated_at: '2019-08-24T14:15:22Z'
-          active: string
-          currency: string
-          unit_amount_without_tax: 3000
-          tax_for_unit_amount: 0
-          unit_amount: 0
     IndustryHistory:
       title: IndustryHistory
       type: object
@@ -2294,12 +2201,18 @@ components:
           properties:
             name:
               type: string
-    Feature.v1:
+    Feature:
       title: Feature
       type: object
       properties:
         id:
           type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         name:
           type: string
           example: フレックスタイム
@@ -2314,108 +2227,6 @@ components:
           enum:
             - company
             - recruitment
-      required:
-        - id
-        - name
-        - type
-        - source_type
-    Account-2:
-      title: Account
-      type: object
-      description: ''
-      properties:
-        id:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        email:
-          type: string
-          format: email
-          example: test@example.com
-        email_verification_status:
-          type: string
-          example: verified
-          enum:
-            - unspecified
-            - request
-            - verified
-          default: unspecified
-        avatar_url:
-          type: string
-        last_sign_in_at:
-          type: string
-          format: date-time
-        last_notification_read_at:
-          type: string
-          format: date-time
-        is_career_scout_target:
-          type: boolean
-          default: true
-          description: キャリアスカウト受け入れるか
-        is_project_scout_target:
-          type: boolean
-          default: true
-          description: プロジェクトスカウト受け入れるか
-        is_public_with_work:
-          type: boolean
-          description: ProbWorksプロジェクト実績を公開するか
-        identity_verification_status:
-          type: string
-          enum:
-            - unspecified
-            - verified
-            - checking
-            - failed
-          default: unspecified
-        identification_requirements:
-          type: array
-          description: >
-            本人確認に足りない項目の配列（'external_account'は銀行口座、'individual.verification.document'は身分証明書）
-          items:
-            type: string
-        missing_requirements_for_general:
-          type: array
-          description: 求職者必須項目の不足項目
-          items:
-            type: string
-        missing_requirements_for_agent:
-          type: array
-          description: エージェント必須項目の不足項目
-          items:
-            type: string
-        is_sample:
-          type: boolean
-          default: false
-          description: サンプルか
-        deleted_at:
-          type: string
-          description: 論理削除時刻
-          format: date-time
-        register_as:
-          type: string
-          enum:
-            - general
-            - organizational
-        is_student:
-          type: boolean
-          default: false
-          description: 学生か
-        display_name:
-          type: string
-        is_concluded_nda:
-          type: boolean
-        profile_completeness:
-          type: number
-          description: プロフィール完成度（%表記）
-        companies:
-          type: array
-          items:
-            $ref: '#/components/schemas/Company'
     AcademicHistory:
       title: AcademicHistory
       type: object
@@ -2542,6 +2353,7 @@ components:
           type: string
           description: 案件開始時期
           format: date
+      description: ''
     Job:
       title: Job
       type: object
@@ -2666,32 +2478,6 @@ components:
           type: string
           format: date
           description: 支払完了予想日付
-    Feature:
-      title: Feature
-      type: object
-      properties:
-        id:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-          example: フレックスタイム
-        type:
-          type: string
-          enum:
-            - default
-            - organizational
-          default: default
-        source_type:
-          type: string
-          enum:
-            - company
-            - recruitment
     OfficialInformation:
       title: OfficialInformation
       type: object
@@ -2819,7 +2605,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Account-2'
+            $ref: '#/components/schemas/Account'
     Accounts:
       description: Example response
       content:
@@ -2830,7 +2616,7 @@ components:
               accounts:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Account-2'
+                  $ref: '#/components/schemas/Account'
               total_data_nums:
                 type: integer
     Company:
@@ -2875,7 +2661,7 @@ components:
                   features:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Feature.v1'
+                      $ref: '#/components/schemas/Feature'
     Companies:
       description: Example response
       content:
@@ -2923,7 +2709,7 @@ components:
                         features:
                           type: array
                           items:
-                            $ref: '#/components/schemas/Feature.v1'
+                            $ref: '#/components/schemas/Feature'
               total_data_nums:
                 type: integer
     Products:
@@ -3035,3 +2821,71 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Feature'
+    TermHistory:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TermHistory'
+    TermHistories:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              term_histories:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TermHistory'
+    PrivacyPolicyHistory:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PrivacyPolicyHistory'
+    PrivacyPolicyHistories:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              privacy_policy_histories:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrivacyPolicyHistory'
+    ConsentMatter:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConsentMatter'
+    ConsentMatters:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              consent_matters:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConsentMatter'
+    Price:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Price'
+    Prices:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              prices:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Price'

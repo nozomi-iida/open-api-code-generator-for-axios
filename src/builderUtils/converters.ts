@@ -73,12 +73,12 @@ const object2value = (obj: OpenAPIV3.NonArraySchemaObject, required: boolean): P
     const val =
       additionalProps === true
         ? {
-            isArray: false,
-            isEnum: false,
-            nullable: false,
-            description: null,
-            value: 'any'
-          }
+          isArray: false,
+          isEnum: false,
+          nullable: false,
+          description: null,
+          value: 'any'
+        }
         : schema2value(additionalProps, required)
 
     if (val)

@@ -67,6 +67,7 @@ export type FetchRecruitmentsQuery = {
   title: string
 }
 
+// variablesは無くても良いかも
 type FetchRecruitments = {
   variables: {
     urlParams: FetchRecruitmentsUrlParams
@@ -75,7 +76,14 @@ type FetchRecruitments = {
   }
 }
 
-export const fetchRecruitments = async ({ variables }: FetchRecruitments): AxiosResponse => {}
+export async function fetchRecruitments({variables}: FetchRecruitments) {
+  const res = await HttpClient.post<Attendance>(
+    `accounts/${variables.urlParams.accountId}/attendances`
+  );
+  return res.data;
+}
 ````
 ## メモ
 modelの型ファイルはいらないんじゃないかな？
+
+schemaからrequestBody, responseBodyなどをProp[]に変換するところまではo2aと同じにして、そこから文字列にする過程をカスタマイズしていこうかな

@@ -21,18 +21,19 @@ const array2String = (val: PropValue, indent: string) => {
   return `${hasMulti ? '(' : ''}${value2String(val, indent)}${hasMulti ? ')' : ''}[]`
 }
 
-export const value2String = (v: PropValue, indent: string): string =>
-  `${
-    v.hasOf
-      ? values2String(v.value as PropValue[], v.hasOf, indent)
-      : v.isArray
-      ? array2String(v.value as PropValue, indent)
-      : v.isEnum
-      ? (v.value as string[]).join(' | ')
-      : Array.isArray(v.value)
-      ? props2String(v.value as Prop[], `  ${indent}`)
-      : v.value
-  }${v.nullable ? ' | null' : ''}`
+export const value2String = (v: PropValue, indent: string): string => {
+ return `${
+   v.hasOf
+     ? values2String(v.value as PropValue[], v.hasOf, indent)
+     : v.isArray
+       ? array2String(v.value as PropValue, indent)
+       : v.isEnum
+         ? (v.value as string[]).join(' | ')
+         : Array.isArray(v.value)
+           ? props2String(v.value as Prop[], `  ${indent}`)
+           : v.value
+ }${v.nullable ? ' | null' : ''}`
+}
 
 const values2String = (values: PropValue[], hasOf: PropValue['hasOf'], indent: string) =>
   `${hasOf === 'anyOf' ? 'Partial<' : ''}${values
@@ -67,3 +68,44 @@ export const props2String = (props: Prop[], indent: string) =>
         }`)(!p.required)
     )
     .join('\n')}${indent}}`
+
+// indentを調整するためにvalue2Stringのindentを若干調整した関数
+export const value2StringForRes = (v: PropValue, indent: string): string => {
+  return (
+    `${
+      v.hasOf
+        ? values2String(v.value as PropValue[], v.hasOf, indent)
+        : v.isArray
+          ? array2String(v.value as PropValue, indent)
+          : v.isEnum
+            ? (v.value as string[]).join(' | ')
+            : Array.isArray(v.value)
+              ? props2String(v.value as Prop[], `${indent}`)
+              : v.value
+    }${v.nullable ? ' | null' : ''}`
+  )
+}
+
+const values2StringForRes = (values: PropValue[], hasOf: PropValue['hasOf'], indent: string) =>
+  `${hasOf === 'anyOf' ? 'Partial<' : ''}${values
+    .map(a => value2StringForRes(a, indent))
+    .join(hasOf === 'oneOf' ? ' | ' : ' & ')}${hasOf === 'anyOf' ? '>' : ''}`
+
+
+export const props2StringForRes = (props: Prop[], indent: string) =>{
+  return (
+    `${props
+      .map((p, i) =>
+        (opt =>
+          `${description2Doc(p.description, `  ${indent}`)}${indent}${
+            opt ? '?' : ''
+          }${values2StringForRes(p.values, undefined, indent)}${opt ? ' | undefined' : ''}${
+            props.length - 1 === i || isMultiLine(p.values) || isMultiLine(props[i + 1].values)
+              ? '\n'
+              : ''
+          }`)(!p.required)
+      )
+      .join('\n')}`
+  )
+}
+
