@@ -78,21 +78,22 @@ export type FetchRecruitments = {
 ````
 
 ````typescript
-import {FetchRecruitments, FetchRecruitmentsResponse} from "./fetchRecruitments";
-import {PostRecruitments, PostRecruitmentsResponse} from "./postRecruitments";
+import { AxiosStatic } from "axios";
+import { FetchRecruitments, FetchRecruitmentsResponse } from "./fetchRecruitments";
+import { PostRecruitments, PostRecruitmentsResponse } from "./postRecruitments";
 
-export const api = ({baseUrl, fetch}) => {
+type ApiProps = {
+  fetch: AxiosStatic
+};
+
+export const api = ({ fetch }: ApiProps) => {
   return {
     async fetchRecruitments({variables}: FetchRecruitments): Promise<FetchRecruitmentsResponse[]> {
-      const res = await fetch.get(
-              `accounts/${variables["urlParams"][0]}/attendances`
-      );
+      const res = await fetch.get(`accounts/${variables["urlParams"][0]}/attendances`);
       return res.data;
     },
     async postRecruitment({variables}: PostRecruitments): Promise<PostRecruitmentsResponse> {
-      const res = await fetch.post(
-              `accounts/${variables["urlParams"][0]}/attendances`
-      );
+      const res = await fetch.post(`accounts/${variables["urlParams"][0]}/attendances`, variables.requestBody);
       return res.data;
     },
   }

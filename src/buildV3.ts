@@ -3,7 +3,6 @@ import {$ref2Type, BINARY_TYPE, getPropertyName, isRefObject, schema2value} from
 import {
   description2Doc,
   Prop,
-  props2String,
   props2StringForHoge,
   PropValue,
   value2String
@@ -14,7 +13,7 @@ import humps from "humps"
 
 // ファイルの生成の前までここでやる
 export const buildV3 = (openapi: OpenAPIV3.Document) => {
-  const files: { file: string; methods: string[] }[] = []
+  const files: { file: string; methods: string[], method: string, url: string }[] = []
   const schemas = schemas2Props(openapi.components?.schemas, openapi) || []
   Object.entries(openapi.paths).forEach(([path, targetUrl]) => {
     const urlParams: Prop[] = []
@@ -183,18 +182,22 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
         最後にprettierで揃えてもらうのもなしじゃなさそう
       */
       const methods: string[] = []
+      const variables: string[] = []
       let responseType = ""
       methods.push("import type * as Types from './@types';\n")
       params.map(param => {
         switch (param.name) {
           case "urlParams":
             methods.push(`export type ${pascalizedTargetOperationId}UrlParams = ${props2StringForHoge([param], '')}`)
+            variables.push(`urlParams: ${pascalizedTargetOperationId}UrlParams`)
             return
           case "queryParams":
             methods.push(`export type ${pascalizedTargetOperationId}QueryParams = ${props2StringForHoge([param], '')}`)
+            variables.push(`queryParams: ${pascalizedTargetOperationId}QueryParams`)
             return;
           case "requestBody":
             methods.push(`export type ${pascalizedTargetOperationId}RequestBody = ${props2StringForHoge([param], '')}`)
+            variables.push(`requestBody: ${pascalizedTargetOperationId}RequestBody`)
             return;
           case "response":
             methods.push(`export type ${pascalizedTargetOperationId}Response = ${props2StringForHoge([param], '')}`)
@@ -202,10 +205,16 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
             return;
         }
       })
+      methods.push(`export type ${pascalizedTargetOperationId} = {\n` +
+        `  variables: {\n` +
+        `    ${variables.join("\n")}\n`+
+        `  }\n` +
+        `}`
+      )
       if(methods.find(method => method.includes(BINARY_TYPE))) {
         methods.unshift("import type { ReadStream } from 'fs'\n");
       }
-      files.push({file: target.operationId, methods: methods})
+      files.push({file: humps.camelize(target.operationId), methods: methods, method: method, url: path})
       /*
         TODO:
          ハードコーディングがすぎる

@@ -9,6 +9,7 @@ type WriteRouteFileProps = {
   }[]
   outputDir?: string
 }
+
 export const writeRouteFile = ({types, files, outputDir}: WriteRouteFileProps) => {
   if (types) {
     fs.mkdirSync(`${outputDir}/@types`)
@@ -16,7 +17,7 @@ export const writeRouteFile = ({types, files, outputDir}: WriteRouteFileProps) =
   }
 
   files.forEach((file, i, dirList) => {
-    const dirPath = `${outputDir}/${humps.camelize(file.file)}`
-    fs.writeFileSync(`${dirPath}.ts`, file.methods.join(""), 'utf8')
+    const dirPath = `${outputDir}/${file.file}.ts`
+    fs.writeFileSync(`${dirPath}`, file.methods.join(""), "utf-8")
   })
 }
