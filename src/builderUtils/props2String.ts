@@ -70,7 +70,7 @@ export const props2String = (props: Prop[], indent: string) =>
     .join('\n')}${indent}}`
 
 // indentを調整するためにvalue2Stringのindentを若干調整した関数
-export const value2StringForRes = (v: PropValue, indent: string): string => {
+export const value2StringForHoge = (v: PropValue, indent: string): string => {
   return (
     `${
       v.hasOf
@@ -86,20 +86,18 @@ export const value2StringForRes = (v: PropValue, indent: string): string => {
   )
 }
 
-const values2StringForRes = (values: PropValue[], hasOf: PropValue['hasOf'], indent: string) =>
+const values2StringForHoge = (values: PropValue[], hasOf: PropValue['hasOf'], indent: string) =>
   `${hasOf === 'anyOf' ? 'Partial<' : ''}${values
-    .map(a => value2StringForRes(a, indent))
+    .map(a => value2StringForHoge(a, indent))
     .join(hasOf === 'oneOf' ? ' | ' : ' & ')}${hasOf === 'anyOf' ? '>' : ''}`
 
 
-export const props2StringForRes = (props: Prop[], indent: string) =>{
+export const props2StringForHoge = (props: Prop[], indent: string) =>{
   return (
     `${props
       .map((p, i) =>
         (opt =>
-          `${description2Doc(p.description, `  ${indent}`)}${indent}${
-            opt ? '?' : ''
-          }${values2StringForRes(p.values, undefined, indent)}${opt ? ' | undefined' : ''}${
+          `${description2Doc(p.description, `  ${indent}`)}${indent}${values2StringForHoge(p.values, undefined, indent)}${opt ? ' | undefined' : ''}${
             props.length - 1 === i || isMultiLine(p.values) || isMultiLine(props[i + 1].values)
               ? '\n'
               : ''

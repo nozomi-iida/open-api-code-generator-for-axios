@@ -68,22 +68,48 @@ export type FetchRecruitmentsQuery = {
 }
 
 // variablesは無くても良いかも
-type FetchRecruitments = {
+export type FetchRecruitments = {
   variables: {
     urlParams: FetchRecruitmentsUrlParams
-    payload: FetchRecruitmentsPayload
+    requestBody: FetchRecruitmentsRequestBody
     queryParams: FetchRecruitmentsQuery
   }
 }
+````
 
-export async function fetchRecruitments({variables}: FetchRecruitments) {
-  const res = await HttpClient.post<Attendance>(
-    `accounts/${variables.urlParams.accountId}/attendances`
-  );
-  return res.data;
+````typescript
+import {FetchRecruitments, FetchRecruitmentsResponse} from "./fetchRecruitments";
+import {PostRecruitments, PostRecruitmentsResponse} from "./postRecruitments";
+
+export const api = ({baseUrl, fetch}) => {
+  return {
+    async fetchRecruitments({variables}: FetchRecruitments): Promise<FetchRecruitmentsResponse[]> {
+      const res = await fetch.get(
+              `accounts/${variables["urlParams"][0]}/attendances`
+      );
+      return res.data;
+    },
+    async postRecruitment({variables}: PostRecruitments): Promise<PostRecruitmentsResponse> {
+      const res = await fetch.post(
+              `accounts/${variables["urlParams"][0]}/attendances`
+      );
+      return res.data;
+    },
+  }
 }
 ````
+
 ## メモ
 modelの型ファイルはいらないんじゃないかな？
 
 schemaからrequestBody, responseBodyなどをProp[]に変換するところまではo2aと同じにして、そこから文字列にする過程をカスタマイズしていこうかな
+
+## aspidaのコードリーディングメモ
+### 目的
+- 通信周りをどうやって実装しているのか
+`buildTemplate`の`createTemplate`メソッドが通信部分の作成場面
+思ったよりかはハードコーディングしてたけど、+は使ってない
+
+- どうやってcustomAxiosを適用するのか 
+apiにaxiosの引数を渡せるようにしてる これは自分のやりたい実装とは合ってないので返る必要がありそう
+configファイルに渡せるようにするとか？

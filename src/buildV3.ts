@@ -1,18 +1,27 @@
 import {OpenAPIV3} from "openapi-types";
-import {$ref2Type, getPropertyName, isRefObject, schema2value} from "./builderUtils/converters";
-import {Prop, props2String, props2StringForRes, PropValue} from "./builderUtils/props2String";
+import {$ref2Type, BINARY_TYPE, getPropertyName, isRefObject, schema2value} from "./builderUtils/converters";
+import {
+  description2Doc,
+  Prop,
+  props2String,
+  props2StringForHoge,
+  PropValue,
+  value2String
+} from "./builderUtils/props2String";
 import {resolveReqRef, resolveResRef} from "./builderUtils/resolvers";
 import schemas2Props from "./builderUtils/schemas2Props";
 import humps from "humps"
 
 // ファイルの生成の前までここでやる
 export const buildV3 = (openapi: OpenAPIV3.Document) => {
-  const files: { fileName: string; methods: string }[] = []
+  const files: { file: string; methods: string[] }[] = []
+  const schemas = schemas2Props(openapi.components?.schemas, openapi) || []
   Object.entries(openapi.paths).forEach(([path, targetUrl]) => {
+    const urlParams: Prop[] = []
+
     if(!targetUrl) return;
     // targetUrl.parametersはurlParamsのこと
     if(targetUrl.parameters) {
-      const reqUrlParams: Prop[] = []
 
       targetUrl.parameters.map(p => {
         if(isRefObject(p)) {
@@ -26,17 +35,25 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
             description: p.description ?? null,
             values: [value]
           }
-          reqUrlParams.push(prop)
+          urlParams.push(prop)
         }
       })
-      // urlParamsの型の文字列
-      const res = props2String(reqUrlParams, '')
-      // console.log(res)
     }
     // 前で処理を終えているため
     delete targetUrl.parameters
     Object.entries(targetUrl).map(([method, target]) => {
-      const params: string[] = []
+      const params: Prop[] = urlParams.length ? [{
+        name: "urlParams",
+        required: false,
+        description: null,
+        values: [{
+          isArray: false,
+          isEnum: false,
+          nullable: false,
+          description: null,
+          value: urlParams
+        }]
+      }] : []
 
       // 前で処理を終えているため(ここでparametersの処理をしてもよいか、型がやや面倒くさそうだった
       if(Array.isArray(target) || typeof target === "string") return
@@ -59,7 +76,7 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
           if(content?.schema) {
             const val = schema2value(content.schema, true, true)
             if(val) {
-              const response: Prop = {
+              const res: Prop = {
                 name: "response",
                 required: true,
                 // example response消すため
@@ -67,7 +84,8 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
                 values: [val]
               }
               // Types.model名になってるの気になる
-              params.push(`export type ${pascalizedTargetOperationId}Response = ${props2StringForRes([response], '')}`)
+              // params.push(`export type ${pascalizedTargetOperationId}Response = ${props2StringForHoge([response], '')}`)
+              params.push(res)
             }
           }
         }
@@ -114,14 +132,13 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
           }
         }
         if(reqBody) {
-          const req: Prop = {
+          const requestBody: Prop = {
             name: 'requestBody',
             required,
             description,
             values: [reqBody]
           }
-          // FIXME: indentを揃える
-          params.push(`export type ${pascalizedTargetOperationId}RequestBody ${props2StringForRes([req], '')}`)
+          params.push(requestBody)
         }
       }
       if(target.parameters) {
@@ -132,7 +149,7 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
           } else {
             const value = schema2value(p.schema, true)
             if(!value) return;
-            const prop: Prop = {
+            const prop = {
               name: getPropertyName(p.name),
               required: p.required ?? false,
               description: p.description ?? null,
@@ -144,16 +161,87 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
             }
           }
         })
-        params.push(`export type ${pascalizedTargetOperationId}Query = ${props2String(queryParams, '')}`)
+        // params.push(`export type ${pascalizedTargetOperationId}Query = ${props2String(queryParams, '')}`)
+        params.push({
+          name: "queryParams",
+          required: false,
+          description: null,
+          values: [{
+            isArray: false,
+            isEnum: false,
+            nullable: false,
+            description: null,
+            value: queryParams
+          }]
+        })
       }
       /*
         paramsはオブジェクトにして、そこのnameをもとにハンドリングするのが良さそう
         urlParamsをparamsに含める
         file名をつける
         axiosの通信の関数を作る
+        最後にprettierで揃えてもらうのもなしじゃなさそう
       */
-      console.log(params)
+      const methods: string[] = []
+      let responseType = ""
+      methods.push("import type * as Types from './@types';\n")
+      params.map(param => {
+        switch (param.name) {
+          case "urlParams":
+            methods.push(`export type ${pascalizedTargetOperationId}UrlParams = ${props2StringForHoge([param], '')}`)
+            return
+          case "queryParams":
+            methods.push(`export type ${pascalizedTargetOperationId}QueryParams = ${props2StringForHoge([param], '')}`)
+            return;
+          case "requestBody":
+            methods.push(`export type ${pascalizedTargetOperationId}RequestBody = ${props2StringForHoge([param], '')}`)
+            return;
+          case "response":
+            methods.push(`export type ${pascalizedTargetOperationId}Response = ${props2StringForHoge([param], '')}`)
+            responseType = `${pascalizedTargetOperationId}Response`
+            return;
+        }
+      })
+      if(methods.find(method => method.includes(BINARY_TYPE))) {
+        methods.unshift("import type { ReadStream } from 'fs'\n");
+      }
+      files.push({file: target.operationId, methods: methods})
+      /*
+        TODO:
+         ハードコーディングがすぎる
+         独自のaxiosを使うってなったときにどうするか考える
+         aspidaのコードをリーディングしてみたほうが良さそう
+      */
+      // const methodContent = `import axios from "axios"\n\n` +
+      //   `${methodTypes.join("")}\n` +
+      //   `type: ${pascalizedTargetOperationId} = {\n ${variables.join("")}\n}\n\n` +
+      //   `export async function ${humps.camelize(target.operationId)}(variables: ${pascalizedTargetOperationId}) {\n` +
+      //   `  const res = await axios.${method}${responseType && `<${responseType}>`}(\n` +
+      //   `    "${variablesPath()}"\n` +
+      //   "  );\n" +
+      //   "}"
     })
-    // TODO: ここで一つの文字列にまとめる(joinするだけ?)
   })
+  const typesText =
+    schemas.length
+      ? [
+        ...schemas.map(s => ({
+          name: s.name,
+          description: s.value.description,
+          text: value2String(s.value, '').replace(/\n {2}/g, '\n')
+        }))
+      ]
+        .map(p => `\n${description2Doc(p.description, '')}export type ${p.name} = ${p.text}\n`)
+        .join('')
+        .replace(/(\W)Types\./g, '$1')
+        .replace(/\]\?:/g, ']:')
+      : null
+
+  return {
+    types: typesText &&
+      `/* eslint-disable */${
+        typesText.includes(BINARY_TYPE) ? "\nimport type { ReadStream } from 'fs'\n" : ''
+      }${typesText}`,
+    files
+  }
 }

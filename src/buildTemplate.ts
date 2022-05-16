@@ -7,7 +7,9 @@ export const buildTemplate = async (config: Config) => {
   const openapi = await $SwaggerParser.parse(config.input)
 
   // FIXME: 条件分岐無理矢理感あり
-  if((openapi as OpenAPIV3.Document).openapi === "3.0.0") {
-    buildV3(openapi as OpenAPIV3.Document)
+  if((openapi as OpenAPIV3.Document).openapi !== "3.0.0") {
+    console.log("openApiのバージョンを3.0.0にしてください")
+    return
   }
+  return buildV3(openapi as OpenAPIV3.Document)
 }
