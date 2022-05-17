@@ -114,3 +114,8 @@ schemaからrequestBody, responseBodyなどをProp[]に変換するところま�
 - どうやってcustomAxiosを適用するのか 
 apiにaxiosの引数を渡せるようにしてる これは自分のやりたい実装とは合ってないので返る必要がありそう
 configファイルに渡せるようにするとか？
+
+## 修正
+- [ ] `api.account.get()`でAPIをコールするようにしたい
+- [ ] configファイルをoption指定できるようにしたい
+- [ ] `multiform-data`を送信するときのハンドリングが考えられてない

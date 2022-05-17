@@ -57,7 +57,7 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
       // 前で処理を終えているため(ここでparametersの処理をしてもよいか、型がやや面倒くさそうだった
       if(Array.isArray(target) || typeof target === "string") return
       if(!target.operationId) {
-        console.log(`operationIdは必須です`)
+        console.log(`${path} ${method}のoperationId存在しません`)
         return;
       }
       const pascalizedTargetOperationId = humps.pascalize(target.operationId)
@@ -158,7 +158,6 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
             }
           }
         })
-        // params.push(`export type ${pascalizedTargetOperationId}Query = ${props2String(queryParams, '')}`)
         params.push({
           name: "queryParams",
           required: false,
@@ -172,13 +171,6 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
           }]
         })
       }
-      /*
-        paramsはオブジェクトにして、そこのnameをもとにハンドリングするのが良さそう
-        urlParamsをparamsに含める
-        file名をつける
-        axiosの通信の関数を作る
-        最後にprettierで揃えてもらうのもなしじゃなさそう
-      */
       const methods: string[] = []
       const variables: string[] = []
       let responseType = ""
@@ -213,20 +205,6 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
         methods.unshift("import type { ReadStream } from 'fs'\n");
       }
       files.push({file: humps.camelize(target.operationId), methods: methods, method: method, url: humps.camelize(path)})
-      /*
-        TODO:
-         ハードコーディングがすぎる
-         独自のaxiosを使うってなったときにどうするか考える
-         aspidaのコードをリーディングしてみたほうが良さそう
-      */
-      // const methodContent = `import axios from "axios"\n\n` +
-      //   `${methodTypes.join("")}\n` +
-      //   `type: ${pascalizedTargetOperationId} = {\n ${variables.join("")}\n}\n\n` +
-      //   `export async function ${humps.camelize(target.operationId)}(variables: ${pascalizedTargetOperationId}) {\n` +
-      //   `  const res = await axios.${method}${responseType && `<${responseType}>`}(\n` +
-      //   `    "${variablesPath()}"\n` +
-      //   "  );\n" +
-      //   "}"
     })
   })
   const typesText =
