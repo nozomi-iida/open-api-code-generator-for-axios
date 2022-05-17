@@ -5,10 +5,10 @@
 進め方としてはaspida, openapi2aspidaを参考にしながら進めていく
 
 ## TODO
-- [ ] 完成イメージを表示できるようにする
-- [ ] camel_caseをsnakeCaseに変換する
-- [ ] axiosの通信部分を実装する
-- [ ] 型を生成する
+- [x] 完成イメージを表示できるようにする
+- [x] camel_caseをsnakeCaseに変換する
+- [x] axiosの通信部分を実装する
+- [x] 型を生成する
 - [x] openAPIをparseする
 - [x] 設定ファイルから引数を受け取れるようにする
 - [x] コマンドに引数を渡せるようにする
