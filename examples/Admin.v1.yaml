@@ -1147,11 +1147,16 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AcademicHistories'
-  /accounts/{account_id}/work_histories:
+  /accounts/{account_id}/work_histories/${work_histories_id}:
     parameters:
       - schema:
           type: string
         name: account_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: work_histories_id
         in: path
         required: true
     get:

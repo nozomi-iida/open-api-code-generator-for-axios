@@ -11,15 +11,6 @@ type BuildApiProps = {
   outputDir?: string
 }
 
-/*
-  必要な情報
-  - responseの型
-  - 変数の型
-  - 上記のimport文
-  - axiosのimport文
-  - apiの関数
-  - 変数・responseがあるか・ないかをどうやって判断するか
-*/
 export const buildApi = ({files, outputDir}: BuildApiProps) => {
   const dirPath = `${outputDir}/$api.ts`
   const imports: string[] = []
@@ -29,10 +20,24 @@ export const buildApi = ({files, outputDir}: BuildApiProps) => {
     const hasQueryParams = file.methods.join("").includes("QueryParams");
     const hasRequestBody = file.methods.join("").includes("RequestBody");
     imports.push(`import { ${humps.pascalize(file.file)}${hasResponse ? `, ${humps.pascalize(file.file)}Response` : ""} } from "./${file.file}"\n`)
+    // TODO: 複数のidがurlに含まれている時にうまく動くかの確認をする
+    // TODO: snake_caseをcamelCaseに変換する
+    const addUrl2UrlParams = () => {
+      const urlIds = file.url.match(/\{.*?\}/g)
+      if(urlIds) {
+        const urlParams = urlIds.map((el, idx) => {
+          const urlId = el.match(/\{(.+)\}/)?.[1]
+          return file.url.replace(el, `\${variables.urlParams?.${urlId}}`)
+        });
+        return urlParams[0]
+      } else {
+        return file.url
+      }
+    }
     apis.push(
-      `  async ${file.file}({ variables }: ${humps.pascalize(file.file)})${hasResponse ? `: Promise<${humps.pascalize(file.file)}Response>` : ""} {\n` +
-      `    const res = await fetch.${file.method}("${file.url}"${hasRequestBody ? `, variables.requestBody` : ""} ${hasQueryParams ? `, variables.queryParams` : ""})\n` +
-      `    return res.data`
+      `    async ${file.file}({ variables }: ${humps.pascalize(file.file)})${hasResponse ? `: Promise<${humps.pascalize(file.file)}Response>` : ""} {\n` +
+      `      const res = await fetch.${file.method}(\`${addUrl2UrlParams()}\`${hasRequestBody ? `, variables.requestBody` : ""} ${hasQueryParams ? `, variables.queryParams` : ""})\n` +
+      `      return res.data`
     )
   })
   const apiText = `import { AxiosStatic } from "axios"\n` +
@@ -41,9 +46,9 @@ export const buildApi = ({files, outputDir}: BuildApiProps) => {
     `fetch: AxiosStatic\n` +
     `};\n` +
     `export const api = ({ fetch }: ApiProps) => {\n` +
-    `return {\n` +
-    `${apis.join("\n  },\n")}` +
-    `}\n` +
+    `  return {\n` +
+    `${apis.join("\n    },\n")}` +
+    `\n    }\n` +
     `  }\n` +
     `}`
   fs.writeFileSync(dirPath, apiText, "utf-8")
