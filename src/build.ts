@@ -2,6 +2,8 @@ import fs from "fs"
 import fse from "fs-extra"
 import {Config} from "./types";
 import { buildTemplate } from "./buildTemplate";
+import {writeRouteFile} from "./writeRouteFile";
+import {buildApi} from "./buildApi";
 
 export const build = (configs: Config[]) => {
   configs.forEach(async (config) => {
@@ -12,6 +14,10 @@ export const build = (configs: Config[]) => {
       return
     }
 
-    await buildTemplate(config)
+    const contents = await buildTemplate(config)
+    if(!contents) return;
+
+    writeRouteFile({types: contents.types, files: contents.files, outputDir: config.outputdir})
+    buildApi({outputDir: config.outputdir, files: contents.files})
   })
 }
