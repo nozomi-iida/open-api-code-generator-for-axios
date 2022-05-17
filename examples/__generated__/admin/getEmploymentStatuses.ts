@@ -1,6 +1,6 @@
 import type * as Types from './@types';
 export type GetEmploymentStatusesResponse = {
-  employment_statuses: Types.EmploymentStatus[]
+  employmentStatuses: Types.EmploymentStatus[]
 }
 export type GetEmploymentStatuses = {
   variables: {

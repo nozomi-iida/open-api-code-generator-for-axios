@@ -7,7 +7,7 @@ export type PostProductRequestBody = {
     active?: boolean | undefined
     /** good=買い切り商品, service=サブスク */
     type: 'good' | 'service'
-    plan_type?: 'client' | 'agent' | undefined
+    planType?: 'client' | 'agent' | undefined
   }
 }
 export type PostProduct = {

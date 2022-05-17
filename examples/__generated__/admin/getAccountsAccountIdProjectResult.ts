@@ -1,6 +1,6 @@
 import type * as Types from './@types';
 export type GetAccountsAccountIdProjectResultUrlParams = {
-  account_id: string
+  accountId: string
 } | undefined
 export type GetAccountsAccountIdProjectResultResponse = Types.ProjectResult
 export type GetAccountsAccountIdProjectResult = {

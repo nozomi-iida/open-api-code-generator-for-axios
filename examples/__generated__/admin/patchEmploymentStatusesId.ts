@@ -4,7 +4,7 @@ export type PatchEmploymentStatusesIdUrlParams = {
 } | undefined
 export type PatchEmploymentStatusesIdResponse = Types.EmploymentStatus
 export type PatchEmploymentStatusesIdRequestBody = {
-  employment_status: {
+  employmentStatus: {
     name: string
     type: 'CAREER' | 'PROJECT'
   }
@@ -12,6 +12,6 @@ export type PatchEmploymentStatusesIdRequestBody = {
 export type PatchEmploymentStatusesId = {
   variables: {
     urlParams: PatchEmploymentStatusesIdUrlParams
-requestBody: PatchEmploymentStatusesIdRequestBody
+    requestBody: PatchEmploymentStatusesIdRequestBody
   }
 }

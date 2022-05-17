@@ -1,7 +1,7 @@
 import type * as Types from './@types';
 export type GetAccountsResponse = {
   accounts: Types.Account[]
-  total_data_nums: number
+  totalDataNums: number
 }
 export type GetAccountsQueryParams = {
   /** 'applicant'を指定すると、応募者のアカウント一覧を取得する */

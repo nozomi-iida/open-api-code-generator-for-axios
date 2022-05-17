@@ -1,6 +1,6 @@
 import type * as Types from './@types';
 export type GetPrivacyPolicyHistoriesResponse = {
-  privacy_policy_histories: Types.PrivacyPolicyHistory[]
+  privacyPolicyHistories: Types.PrivacyPolicyHistory[]
 }
 export type GetPrivacyPolicyHistories = {
   variables: {

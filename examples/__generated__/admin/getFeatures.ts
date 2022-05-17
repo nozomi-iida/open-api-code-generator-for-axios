@@ -8,7 +8,7 @@ export type GetFeaturesQueryParams = {
   /** feature名を前方一致で検索 */
   keyword?: string | undefined
   /** 「company」or「recruitment」 */
-  source_type?: 'company' | 'recruitment' | undefined
+  sourceType?: 'company' | 'recruitment' | undefined
 } | undefined
 export type GetFeatures = {
   variables: {

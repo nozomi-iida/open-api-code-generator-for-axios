@@ -20,16 +20,16 @@ export const buildApi = ({files, outputDir}: BuildApiProps) => {
     const hasQueryParams = file.methods.join("").includes("QueryParams");
     const hasRequestBody = file.methods.join("").includes("RequestBody");
     imports.push(`import { ${humps.pascalize(file.file)}${hasResponse ? `, ${humps.pascalize(file.file)}Response` : ""} } from "./${file.file}"\n`)
-    // TODO: 複数のidがurlに含まれている時にうまく動くかの確認をする
     // TODO: snake_caseをcamelCaseに変換する
     const addUrl2UrlParams = () => {
-      const urlIds = file.url.match(/\{.*?\}/g)
-      if(urlIds) {
-        const urlParams = urlIds.map((el, idx) => {
-          const urlId = el.match(/\{(.+)\}/)?.[1]
-          return file.url.replace(el, `\${variables.urlParams?.${urlId}}`)
-        });
-        return urlParams[0]
+      const urlVariables = file.url.match(/\{.*?\}/g)
+      if(urlVariables) {
+        let urlParams = file.url
+        urlVariables.forEach(urlVariable => {
+          const urlId = urlVariable.match(/\{(.+)\}/)?.[1]
+          urlParams = urlParams.replace(urlVariable, `\${variables.urlParams?.${urlId}}`)
+        })
+        return urlParams
       } else {
         return file.url
       }

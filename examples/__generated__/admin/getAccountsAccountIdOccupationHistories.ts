@@ -1,9 +1,9 @@
 import type * as Types from './@types';
 export type GetAccountsAccountIdOccupationHistoriesUrlParams = {
-  account_id: string
+  accountId: string
 } | undefined
 export type GetAccountsAccountIdOccupationHistoriesResponse = {
-  occupation_histories: Types.OccupationHistory[]
+  occupationHistories: Types.OccupationHistory[]
 }
 export type GetAccountsAccountIdOccupationHistories = {
   variables: {

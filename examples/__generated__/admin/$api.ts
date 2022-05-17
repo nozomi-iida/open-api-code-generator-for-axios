@@ -68,23 +68,23 @@ fetch: AxiosStatic
 export const api = ({ fetch }: ApiProps) => {
   return {
     async getEmploymentStatuses({ variables }: GetEmploymentStatuses): Promise<GetEmploymentStatusesResponse> {
-      const res = await fetch.get(`/employment_statuses` )
+      const res = await fetch.get(`/employmentStatuses` )
       return res.data
     },
     async postEmploymentStatuses({ variables }: PostEmploymentStatuses): Promise<PostEmploymentStatusesResponse> {
-      const res = await fetch.post(`/employment_statuses`, variables.requestBody )
+      const res = await fetch.post(`/employmentStatuses`, variables.requestBody )
       return res.data
     },
     async getEmploymentStatusesId({ variables }: GetEmploymentStatusesId): Promise<GetEmploymentStatusesIdResponse> {
-      const res = await fetch.get(`/employment_statuses/${variables.urlParams?.id}` )
+      const res = await fetch.get(`/employmentStatuses/${variables.urlParams?.id}` )
       return res.data
     },
     async patchEmploymentStatusesId({ variables }: PatchEmploymentStatusesId): Promise<PatchEmploymentStatusesIdResponse> {
-      const res = await fetch.patch(`/employment_statuses/${variables.urlParams?.id}`, variables.requestBody )
+      const res = await fetch.patch(`/employmentStatuses/${variables.urlParams?.id}`, variables.requestBody )
       return res.data
     },
     async deleteEmploymentStatusesId({ variables }: DeleteEmploymentStatusesId) {
-      const res = await fetch.delete(`/employment_statuses/${variables.urlParams?.id}` )
+      const res = await fetch.delete(`/employmentStatuses/${variables.urlParams?.id}` )
       return res.data
     },
     async getStates({ variables }: GetStates): Promise<GetStatesResponse> {
@@ -108,39 +108,39 @@ export const api = ({ fetch }: ApiProps) => {
       return res.data
     },
     async getTermHistories({ variables }: GetTermHistories): Promise<GetTermHistoriesResponse> {
-      const res = await fetch.get(`/term_histories` , variables.queryParams)
+      const res = await fetch.get(`/termHistories` , variables.queryParams)
       return res.data
     },
     async postTermHistories({ variables }: PostTermHistories): Promise<PostTermHistoriesResponse> {
-      const res = await fetch.post(`/term_histories`, variables.requestBody )
+      const res = await fetch.post(`/termHistories`, variables.requestBody )
       return res.data
     },
     async getTermHistoriesId({ variables }: GetTermHistoriesId): Promise<GetTermHistoriesIdResponse> {
-      const res = await fetch.get(`/term_histories/${variables.urlParams?.id}` )
+      const res = await fetch.get(`/termHistories/${variables.urlParams?.id}` )
       return res.data
     },
     async getPrivacyPolicyHistories({ variables }: GetPrivacyPolicyHistories): Promise<GetPrivacyPolicyHistoriesResponse> {
-      const res = await fetch.get(`/privacy_policy_histories` )
+      const res = await fetch.get(`/privacyPolicyHistories` )
       return res.data
     },
     async postPrivacyPolicyHistories({ variables }: PostPrivacyPolicyHistories): Promise<PostPrivacyPolicyHistoriesResponse> {
-      const res = await fetch.post(`/privacy_policy_histories`, variables.requestBody )
+      const res = await fetch.post(`/privacyPolicyHistories`, variables.requestBody )
       return res.data
     },
     async getPrivacyPolicyHistoriesId({ variables }: GetPrivacyPolicyHistoriesId): Promise<GetPrivacyPolicyHistoriesIdResponse> {
-      const res = await fetch.get(`/privacy_policy_histories/${variables.urlParams?.id}` )
+      const res = await fetch.get(`/privacyPolicyHistories/${variables.urlParams?.id}` )
       return res.data
     },
     async getConsentMatters({ variables }: GetConsentMatters): Promise<GetConsentMattersResponse> {
-      const res = await fetch.get(`/consent_matters` )
+      const res = await fetch.get(`/consentMatters` )
       return res.data
     },
     async postConsentMatters({ variables }: PostConsentMatters): Promise<PostConsentMattersResponse> {
-      const res = await fetch.post(`/consent_matters`, variables.requestBody )
+      const res = await fetch.post(`/consentMatters`, variables.requestBody )
       return res.data
     },
     async getConsentMattersId({ variables }: GetConsentMattersId): Promise<GetConsentMattersIdResponse> {
-      const res = await fetch.get(`/consent_matters/${variables.urlParams?.id}` )
+      const res = await fetch.get(`/consentMatters/${variables.urlParams?.id}` )
       return res.data
     },
     async getProduct({ variables }: GetProduct): Promise<GetProductResponse> {
@@ -180,11 +180,11 @@ export const api = ({ fetch }: ApiProps) => {
       return res.data
     },
     async getJobChangeCompletionReports({ variables }: GetJobChangeCompletionReports): Promise<GetJobChangeCompletionReportsResponse> {
-      const res = await fetch.get(`/job_change_completion_reports` )
+      const res = await fetch.get(`/jobChangeCompletionReports` )
       return res.data
     },
     async getRecruitmentCompletionReports({ variables }: GetRecruitmentCompletionReports): Promise<GetRecruitmentCompletionReportsResponse> {
-      const res = await fetch.get(`/recruitment_completion_reports` )
+      const res = await fetch.get(`/recruitmentCompletionReports` )
       return res.data
     },
     async getRecruitments({ variables }: GetRecruitments): Promise<GetRecruitmentsResponse> {
@@ -220,15 +220,15 @@ export const api = ({ fetch }: ApiProps) => {
       return res.data
     },
     async postCompaniesCompanyIdAccept({ variables }: PostCompaniesCompanyIdAccept): Promise<PostCompaniesCompanyIdAcceptResponse> {
-      const res = await fetch.post(`/companies/${variables.urlParams?.company_id}/accept` )
+      const res = await fetch.post(`/companies/${variables.urlParams?.companyId}/accept` )
       return res.data
     },
     async postCompaniesCompanyIdReject({ variables }: PostCompaniesCompanyIdReject): Promise<PostCompaniesCompanyIdRejectResponse> {
-      const res = await fetch.post(`/companies/${variables.urlParams?.company_id}/reject` )
+      const res = await fetch.post(`/companies/${variables.urlParams?.companyId}/reject` )
       return res.data
     },
     async postCompaniesCompanyIdForcedCancel({ variables }: PostCompaniesCompanyIdForcedCancel): Promise<PostCompaniesCompanyIdForcedCancelResponse> {
-      const res = await fetch.post(`/companies/${variables.urlParams?.company_id}/forced_cancel` )
+      const res = await fetch.post(`/companies/${variables.urlParams?.companyId}/forcedCancel` )
       return res.data
     },
     async getAccounts({ variables }: GetAccounts): Promise<GetAccountsResponse> {
@@ -248,35 +248,35 @@ export const api = ({ fetch }: ApiProps) => {
       return res.data
     },
     async getAccountsAccountIdAcademicHistories({ variables }: GetAccountsAccountIdAcademicHistories): Promise<GetAccountsAccountIdAcademicHistoriesResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/academic_histories` , variables.queryParams)
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/academicHistories` , variables.queryParams)
       return res.data
     },
     async getAccountsAccountIdWorkHistories({ variables }: GetAccountsAccountIdWorkHistories): Promise<GetAccountsAccountIdWorkHistoriesResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/work_histories/${work_histories_id}` )
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/workHistories/$${variables.urlParams?.workHistoriesId}` )
       return res.data
     },
     async getAccountsAccountIdSkills({ variables }: GetAccountsAccountIdSkills): Promise<GetAccountsAccountIdSkillsResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/skills` )
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/skills` )
       return res.data
     },
     async getAccountsAccountIdHopes({ variables }: GetAccountsAccountIdHopes): Promise<GetAccountsAccountIdHopesResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/hopes` )
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/hopes` )
       return res.data
     },
     async getAccountsAccountIdProjectResult({ variables }: GetAccountsAccountIdProjectResult): Promise<GetAccountsAccountIdProjectResultResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/project_result` )
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/projectResult` )
       return res.data
     },
     async getAccountsAccountIdOccupationHistories({ variables }: GetAccountsAccountIdOccupationHistories): Promise<GetAccountsAccountIdOccupationHistoriesResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/occupation_histories` )
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/occupationHistories` )
       return res.data
     },
     async getAccountsAccountIdIndustryHistories({ variables }: GetAccountsAccountIdIndustryHistories): Promise<GetAccountsAccountIdIndustryHistoriesResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/industry_histories` )
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/industryHistories` )
       return res.data
     },
     async getAccountsAccountIdAchievements({ variables }: GetAccountsAccountIdAchievements): Promise<GetAccountsAccountIdAchievementsResponse> {
-      const res = await fetch.get(`/accounts/${variables.urlParams?.account_id}/achievements` )
+      const res = await fetch.get(`/accounts/${variables.urlParams?.accountId}/achievements` )
       return res.data
     },
     async getWithdrawals({ variables }: GetWithdrawals): Promise<GetWithdrawalsResponse> {
@@ -296,23 +296,23 @@ export const api = ({ fetch }: ApiProps) => {
       return res.data
     },
     async getOfficialInformations({ variables }: GetOfficialInformations): Promise<GetOfficialInformationsResponse> {
-      const res = await fetch.get(`/official_informations` , variables.queryParams)
+      const res = await fetch.get(`/officialInformations` , variables.queryParams)
       return res.data
     },
     async postOfficialInformations({ variables }: PostOfficialInformations): Promise<PostOfficialInformationsResponse> {
-      const res = await fetch.post(`/official_informations`, variables.requestBody )
+      const res = await fetch.post(`/officialInformations`, variables.requestBody )
       return res.data
     },
     async getOfficialInformationsId({ variables }: GetOfficialInformationsId): Promise<GetOfficialInformationsIdResponse> {
-      const res = await fetch.get(`/official_informations/${variables.urlParams?.id}` )
+      const res = await fetch.get(`/officialInformations/${variables.urlParams?.id}` )
       return res.data
     },
     async patchOfficialInformationsId({ variables }: PatchOfficialInformationsId): Promise<PatchOfficialInformationsIdResponse> {
-      const res = await fetch.patch(`/official_informations/${variables.urlParams?.id}`, variables.requestBody )
+      const res = await fetch.patch(`/officialInformations/${variables.urlParams?.id}`, variables.requestBody )
       return res.data
     },
     async deleteOfficialInformationsId({ variables }: DeleteOfficialInformationsId) {
-      const res = await fetch.delete(`/official_informations/${variables.urlParams?.id}` )
+      const res = await fetch.delete(`/officialInformations/${variables.urlParams?.id}` )
       return res.data
     }
   }

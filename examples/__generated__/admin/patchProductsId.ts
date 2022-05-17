@@ -13,6 +13,6 @@ export type PatchProductsIdRequestBody = {
 export type PatchProductsId = {
   variables: {
     urlParams: PatchProductsIdUrlParams
-requestBody: PatchProductsIdRequestBody
+    requestBody: PatchProductsIdRequestBody
   }
 }

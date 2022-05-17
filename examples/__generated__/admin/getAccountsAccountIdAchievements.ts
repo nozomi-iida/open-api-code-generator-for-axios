@@ -1,6 +1,6 @@
 import type * as Types from './@types';
 export type GetAccountsAccountIdAchievementsUrlParams = {
-  account_id: string
+  accountId: string
 } | undefined
 export type GetAccountsAccountIdAchievementsResponse = {
   achievements: Types.Achievement[]

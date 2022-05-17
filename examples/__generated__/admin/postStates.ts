@@ -3,7 +3,7 @@ export type PostStatesResponse = Types.State
 export type PostStatesRequestBody = {
   state: {
     name: string
-    country_code: string
+    countryCode: string
   }
 }
 export type PostStates = {

@@ -6,12 +6,12 @@ export type PatchStatesIdResponse = Types.State
 export type PatchStatesIdRequestBody = {
   state: {
     name: string
-    country_code: string
+    countryCode: string
   }
 }
 export type PatchStatesId = {
   variables: {
     urlParams: PatchStatesIdUrlParams
-requestBody: PatchStatesIdRequestBody
+    requestBody: PatchStatesIdRequestBody
   }
 }

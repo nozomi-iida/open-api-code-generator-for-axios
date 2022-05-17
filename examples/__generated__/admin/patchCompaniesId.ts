@@ -22,6 +22,6 @@ export type PatchCompaniesIdRequestBody = {
 export type PatchCompaniesId = {
   variables: {
     urlParams: PatchCompaniesIdUrlParams
-requestBody: PatchCompaniesIdRequestBody
+    requestBody: PatchCompaniesIdRequestBody
   }
 }

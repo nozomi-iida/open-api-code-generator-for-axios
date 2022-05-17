@@ -8,14 +8,14 @@ export type PatchAccountsIdRequestBody = {
   account: {
     email: string
     avatar: (File | ReadStream)
-    is_career_scout_target: boolean
-    is_project_scout_target: boolean
-    is_public_work: boolean
+    isCareerScoutTarget: boolean
+    isProjectScoutTarget: boolean
+    isPublicWork: boolean
   }
 }
 export type PatchAccountsId = {
   variables: {
     urlParams: PatchAccountsIdUrlParams
-requestBody: PatchAccountsIdRequestBody
+    requestBody: PatchAccountsIdRequestBody
   }
 }

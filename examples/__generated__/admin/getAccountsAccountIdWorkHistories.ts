@@ -1,10 +1,10 @@
 import type * as Types from './@types';
 export type GetAccountsAccountIdWorkHistoriesUrlParams = {
-  account_id: string
-  work_histories_id: string
+  accountId: string
+  workHistoriesId: string
 } | undefined
 export type GetAccountsAccountIdWorkHistoriesResponse = {
-  work_histories: Types.WorkHistory[]
+  workHistories: Types.WorkHistory[]
 }
 export type GetAccountsAccountIdWorkHistories = {
   variables: {

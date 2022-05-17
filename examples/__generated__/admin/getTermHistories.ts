@@ -1,6 +1,6 @@
 import type * as Types from './@types';
 export type GetTermHistoriesResponse = {
-  term_histories: Types.TermHistory[]
+  termHistories: Types.TermHistory[]
 }
 export type GetTermHistoriesQueryParams = {
   type?: 'common' | 'plan' | undefined

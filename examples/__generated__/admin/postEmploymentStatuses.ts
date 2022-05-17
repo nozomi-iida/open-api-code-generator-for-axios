@@ -1,7 +1,7 @@
 import type * as Types from './@types';
 export type PostEmploymentStatusesResponse = Types.EmploymentStatus
 export type PostEmploymentStatusesRequestBody = {
-  employment_status: {
+  employmentStatus: {
     name: string
     type: 'CAREER' | 'PROJECT'
   }

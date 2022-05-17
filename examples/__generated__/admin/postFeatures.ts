@@ -3,7 +3,7 @@ export type PostFeaturesResponse = Types.Feature
 export type PostFeaturesRequestBody = {
   feature: {
     name: string
-    source_type: 'company' | 'recruitment'
+    sourceType: 'company' | 'recruitment'
   }
 }
 export type PostFeatures = {

@@ -1,7 +1,7 @@
 import type * as Types from './@types';
 export type PostTermHistoriesResponse = Types.TermHistory
 export type PostTermHistoriesRequestBody = {
-  term_history: {
+  termHistory: {
     content: string
     version: string
   }

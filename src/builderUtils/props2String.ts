@@ -1,3 +1,5 @@
+import humps from "humps";
+
 export type PropValue = {
   isArray: boolean
   isEnum: boolean
@@ -59,7 +61,7 @@ export const props2String = (props: Prop[], indent: string) =>
   `{\n${props
     .map((p, i) =>
       (opt =>
-        `${description2Doc(p.description, `  ${indent}`)}  ${indent}${p.name}${
+        `${description2Doc(p.description, `  ${indent}`)}  ${indent}${humps.camelize(p.name)}${
           opt ? '?' : ''
         }: ${values2String(p.values, undefined, indent)}${opt ? ' | undefined' : ''}${
           props.length - 1 === i || isMultiLine(p.values) || isMultiLine(props[i + 1].values)

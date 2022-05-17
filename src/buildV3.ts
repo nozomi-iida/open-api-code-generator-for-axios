@@ -29,7 +29,7 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
           const value = schema2value(p.schema, true)
           if(!value) return;
           const prop: Prop = {
-            name: getPropertyName(p.name),
+            name: humps.camelize(getPropertyName(p.name)),
             required: p.required ?? false,
             description: p.description ?? null,
             values: [value]
@@ -82,8 +82,6 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
                 description: "",
                 values: [val]
               }
-              // Types.model名になってるの気になる
-              // params.push(`export type ${pascalizedTargetOperationId}Response = ${props2StringForHoge([response], '')}`)
               params.push(res)
             }
           }
@@ -207,14 +205,14 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
       })
       methods.push(`export type ${pascalizedTargetOperationId} = {\n` +
         `  variables: {\n` +
-        `    ${variables.join("\n")}\n`+
+        `    ${variables.join("\n    ")}\n`+
         `  }\n` +
         `}`
       )
       if(methods.find(method => method.includes(BINARY_TYPE))) {
         methods.unshift("import type { ReadStream } from 'fs'\n");
       }
-      files.push({file: humps.camelize(target.operationId), methods: methods, method: method, url: path})
+      files.push({file: humps.camelize(target.operationId), methods: methods, method: method, url: humps.camelize(path)})
       /*
         TODO:
          ハードコーディングがすぎる

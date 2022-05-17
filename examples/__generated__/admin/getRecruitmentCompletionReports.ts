@@ -1,6 +1,6 @@
 import type * as Types from './@types';
 export type GetRecruitmentCompletionReportsResponse = {
-  recruitment_completion_reports: Types.RecruitmentCompletionReport[]
+  recruitmentCompletionReports: Types.RecruitmentCompletionReport[]
 }
 export type GetRecruitmentCompletionReports = {
   variables: {

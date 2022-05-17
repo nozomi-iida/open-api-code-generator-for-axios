@@ -1,6 +1,6 @@
 import type * as Types from './@types';
 export type PostCompaniesCompanyIdForcedCancelUrlParams = {
-  company_id: string
+  companyId: string
 } | undefined
 export type PostCompaniesCompanyIdForcedCancelResponse = Types.Company & {
     owner: Types.Account & {

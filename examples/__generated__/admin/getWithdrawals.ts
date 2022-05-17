@@ -2,12 +2,12 @@ import type * as Types from './@types';
 export type GetWithdrawalsResponse = {
   withdrawals: {
     amount: number
-    withdrawal_method: 'manual' | 'automatic'
-    created_at: string
+    withdrawalMethod: 'manual' | 'automatic'
+    createdAt: string
     account?: Types.Account | undefined
     company?: Types.Company | undefined
   }[]
-  total_data_nums: number
+  totalDataNums: number
 }
 export type GetWithdrawals = {
   variables: {
