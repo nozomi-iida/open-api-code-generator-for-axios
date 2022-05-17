@@ -1,5 +1,5 @@
 {
-  "name": "open-api-code-generator-for-axios",
+  "name": "@nozomi-iida/open-api-code-generator-for-axios",
   "version": "0.0.0",
   "description": "1. openAPIから型を生成する 2. その型を利用してaxiosの通信部分の関数を生成する",
   "main": "index.js",
