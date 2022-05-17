@@ -3,11 +3,14 @@
   "version": "0.0.0",
   "description": "1. openAPIから型を生成する 2. その型を利用してaxiosの通信部分の関数を生成する",
   "main": "index.js",
+  "publishConfig": {
+    "nozomi-iida:registry": "https://npm.pkg.github.com"
+  },
   "bin": {
     "openapi-codegen": "./bin/openapi-codegen.js"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "tsc",
     "build:watch": "tsc -w",
     "generate": "rm -rf examples/__generated__ && openapi-codegen"
   },

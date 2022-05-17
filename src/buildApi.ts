@@ -36,14 +36,14 @@ export const buildApi = ({files, outputDir}: BuildApiProps) => {
     }
     apis.push(
       `    async ${file.file}({ variables }: ${humps.pascalize(file.file)})${hasResponse ? `: Promise<${humps.pascalize(file.file)}Response>` : ""} {\n` +
-      `      const res = await fetch.${file.method}(\`${addUrl2UrlParams()}\`${hasRequestBody ? `, variables.requestBody` : ""} ${hasQueryParams ? `, variables.queryParams` : ""})\n` +
+      `      const res = await fetch.${file.method}(\`${addUrl2UrlParams()}\`${hasRequestBody ? `, variables.requestBody` : ""}${hasQueryParams ? `, {\n        params: variables.queryParams\n      }` : ""})\n` +
       `      return res.data`
     )
   })
-  const apiText = `import { AxiosStatic } from "axios"\n` +
+  const apiText = `import { AxiosStatic, AxiosInstance } from "axios"\n` +
     `${imports.join("")}\n` +
     `type ApiProps = {\n` +
-    `fetch: AxiosStatic\n` +
+    `  fetch: AxiosStatic | AxiosInstance\n` +
     `};\n` +
     `export const api = ({ fetch }: ApiProps) => {\n` +
     `  return {\n` +
