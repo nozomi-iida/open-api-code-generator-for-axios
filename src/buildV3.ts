@@ -3,7 +3,7 @@ import {$ref2Type, BINARY_TYPE, getPropertyName, isRefObject, schema2value} from
 import {
   description2Doc,
   Prop,
-  props2StringForHoge,
+  props2StringForParams,
   PropValue,
   value2String
 } from "./builderUtils/props2String";
@@ -186,19 +186,19 @@ export const buildV3 = (openapi: OpenAPIV3.Document) => {
       params.map(param => {
         switch (param.name) {
           case "urlParams":
-            methods.push(`export type ${pascalizedTargetOperationId}UrlParams = ${props2StringForHoge([param], '')}`)
+            methods.push(`export type ${pascalizedTargetOperationId}UrlParams = ${props2StringForParams([param], '')}`)
             variables.push(`urlParams: ${pascalizedTargetOperationId}UrlParams`)
             return
           case "queryParams":
-            methods.push(`export type ${pascalizedTargetOperationId}QueryParams = ${props2StringForHoge([param], '')}`)
+            methods.push(`export type ${pascalizedTargetOperationId}QueryParams = ${props2StringForParams([param], '')}`)
             variables.push(`queryParams: ${pascalizedTargetOperationId}QueryParams`)
             return;
           case "requestBody":
-            methods.push(`export type ${pascalizedTargetOperationId}RequestBody = ${props2StringForHoge([param], '')}`)
+            methods.push(`export type ${pascalizedTargetOperationId}RequestBody = ${props2StringForParams([param], '')}`)
             variables.push(`requestBody: ${pascalizedTargetOperationId}RequestBody`)
             return;
           case "response":
-            methods.push(`export type ${pascalizedTargetOperationId}Response = ${props2StringForHoge([param], '')}`)
+            methods.push(`export type ${pascalizedTargetOperationId}Response = ${props2StringForParams([param], '')}`)
             responseType = `${pascalizedTargetOperationId}Response`
             return;
         }
